@@ -33,6 +33,24 @@ body {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
 }
+
+.auth-wrap{
+  margin: 10% auto;
+  position: relative;
+  max-width: 520px;
+}
+.auth-box{
+  padding: 30px;
+  border-radius: 9px;
+  background-color: #ffffff;
+  border: 1px solid rgba(98, 103, 115, 0.2);
+  margin-bottom: 20px;
+}
+
+.auth-btn{
+  margin-top: 30px;
+}
+
 .wrap {
   width: 90%;
   margin: 0 auto;
@@ -67,3 +85,4 @@ body {
   background-repeat: repeat;
   z-index: 99;
 }
+
