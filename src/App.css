@@ -34,6 +34,10 @@ body {
   to { transform: rotate(360deg); }
 }
 
+.active {
+  color: #23b195 !important;
+}
+
 .auth-wrap{
   margin: 10% auto;
   position: relative;
@@ -73,6 +77,99 @@ body {
   width: 240px;
   z-index: 999;
 }
+
+.user-info--block {
+  border-radius: 0;
+  margin-bottom: 0;
+  padding: 0 10px 0 0;
+  min-height: 70px;
+  margin-left: 10px;
+}
+
+.user-info--list {
+  padding-left: 0;
+  list-style: none;
+  margin-bottom: 0;
+}
+
+.user-info--item {
+  display: inline;
+  cursor: pointer;
+}
+
+.user-info-bell {
+  font-size: 20px;
+  padding: 0 15px;
+  vertical-align: middle;
+}
+
+.user-info--avatar{
+  height: 32px;
+  width: 32px;
+  border-radius: 50%;
+  margin-right: 5px;
+  margin-left: 12px;
+}
+
+.user-info-menu-down {
+  font-size: 10px;
+  padding: 0 10px;
+}
+
+.user-info-bell-wrap{
+  padding: 0;
+  line-height: 70px;
+  color: rgba(98, 103, 115, 0.8);
+  display: inline;
+}
+
+.user-info-menu{
+  position: absolute;
+  transform: translate3d(-25px, 70px, 0px);
+  will-change: transform;
+  top: 0;
+  left: 80px;
+
+  padding: 4px 0;
+  font-size: 14px;
+  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.05);
+  z-index: 100;
+  float: left;
+  min-width: 170px;
+  margin: .125rem 0 0;
+  color: #212529;
+  text-align: left;
+  list-style: none;
+  background-color: #fff;
+  background-clip: padding-box;
+  border: 1px solid rgba(0,0,0,.15);
+  border-radius: .25rem;
+}
+
+.user-info-menu-item{
+  padding: 7px 20px;
+  display: block;
+  width: 100%;
+  clear: both;
+  font-weight: 400;
+  color: #212529;
+  text-align: inherit;
+  white-space: nowrap;
+  background: 0 0;
+  border: 0;
+}
+.user-info-menu-item:hover {
+  color: #16181b;
+  text-decoration: none;
+  background-color: #f8f9fa;
+  cursor: pointer;
+}
+
+.user-info--menu-icon {
+
+  margin: 0 15px 0 5px;
+  font-size: 12px;
+}
 .side-menu {
   position: absolute;
   background-color: #ffffff;
@@ -84,5 +181,51 @@ body {
   transition: margin-left 0.3s;
   background-repeat: repeat;
   z-index: 99;
+  padding-left: 0;
+  padding-right: 0;
+}
+.side-menu--block {
+  padding: 0;
+  list-style: none;
+  margin: 0;
+}
+.side-menu--title {
+  padding: 12px 20px !important;
+  letter-spacing: .05em;
+  pointer-events: none;
+  cursor: default;
+  font-size: 11px;
+  text-transform: uppercase;
+  color: #7a7d84;
+  font-family: "Hind", sans-serif;
+}
+.side-menu--link {
+  color: rgba(98, 103, 115, 0.8);
+  display: block;
+  padding: 12px 20px;
+  margin: 2px 0;
+  font-size: 14px;
+  position: relative;
 }
 
+.side-menu--link:hover{
+  color: #626773;
+  text-decoration: none;
+  background-color: whitesmoke;
+  cursor: pointer;
+}
+.side-menu--icon {
+  display: inline-block;
+  font-size: 18px;
+  line-height: 17px;
+  margin: 0 10px 0 3px;
+  text-align: center;
+  vertical-align: middle;
+  width: 20px;
+}
+
+.content-page {
+  margin-left: 240px;
+  overflow: hidden;
+  border-left: 7px solid #f5f5f5;
+}

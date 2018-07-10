@@ -2,13 +2,31 @@ import React, {Component} from 'react';
 import logo from './logo.svg';
 import '../node_modules/bootstrap/dist/css/bootstrap.css';
 import './App.css';
-import {Button} from 'react-bootstrap';
+import {Glyphicon} from 'react-bootstrap';
 import {Grid, Row, Col} from 'react-bootstrap';
 import Auth from './components/auth';
 import {connect} from 'react-redux';
 import {actionGetUserInfo, actionGetAllRoles, actionGetAllTesting} from "./common/action";
+import {Link} from 'react-router-dom';
+import Userinfo from './components/userInfo';
 
 class App extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            auth: true
+        };
+    }
+
+    componentDidMount () {
+       this.props.actionGetUserInfo();
+    }
+
+    logout = () => {
+        localStorage.removeItem('token');
+        this.setState({auth: !this.state.auth})
+    };
+
     render() {
         return (
             localStorage.getItem('token') ?
@@ -18,21 +36,27 @@ class App extends Component {
                             <img src={logo} className="App-logo" alt="logo"/>
 
                         </Col>
-                        <Col xsOffset={8} xs={2}>
-                            Тут будет колокольчик и инфа по пользователю.
+                        <Col xs={8}>
+
+                        </Col>
+                        <Col xs={2}>
+                            <Userinfo userInfo={this.props.userInfo} logout={this.logout}/>
                         </Col>
                     </Row>
                     <Row>
                         <Col xs={2} className={'side-menu'}>
-                            <ul>
-                                <li>Журнал</li>
-                                <li>Журнал</li>
-                                <li>Журнал</li>
-                                <li>Журнал</li>
+                            <ul className={'side-menu--block'}>
+                                <li className={'side-menu--title'}>Navigation</li>
+                                <li><Link to={`/`} className={'side-menu--link active'}><Glyphicon glyph="time" className={'side-menu--icon'}/><span>Журнал</span></Link></li>
+                                <li><a className={'side-menu--link'}><Glyphicon glyph="book" className={'side-menu--icon'}/><span>История</span></a></li>
+                                <li><Link to={`/info`} className={'side-menu--link'}><Glyphicon glyph="info-sign" className={'side-menu--icon'}/><span>Информация</span></Link></li>
+                                <li><a className={'side-menu--link'}><Glyphicon glyph="cog" className={'side-menu--icon'}/><span>Настройки</span></a></li>
                             </ul>
                         </Col>
-                        <Col xs={10}>
-
+                        <Col xs={10} className={'content-page'}>
+                            <div >
+                            {this.props.children}
+                            </div>
                         </Col>
                     </Row>
 

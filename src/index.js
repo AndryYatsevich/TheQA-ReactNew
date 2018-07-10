@@ -9,6 +9,8 @@ import {Provider} from 'react-redux';
 import rootReducer from './rootReducer';
 import { BrowserRouter as Router, Route, Switch  } from 'react-router-dom';
 import thunk from 'redux-thunk';
+import Journal from './components/journal';
+import Info from './components/info';
 
 const store = createStore(rootReducer, composeWithDevTools(applyMiddleware(thunk)));
 
@@ -24,7 +26,8 @@ ReactDOM.render(
     <Provider store={store}>
         <Router>
             <Switch>
-                <RouteWishApp exact path='/' Component={App}/>
+                <RouteWishApp exact path='/' Component={Journal}/>
+                <RouteWishApp path='/info' Component={Info} />
                 {/*<RouteWishApp path='/journal' Component={Journal}/>
                 <RouteWishApp path='/settings' Component={Settings} />
                 <RouteWishApp path='/history' Component={History} />
