@@ -1,0 +1,6 @@
+export default {
+
+    GET_ALL_DEVICES: 'GET_ALL_DEVICES',
+    CHANGE_STATUS_TO_WORK: 'CHANGE_STATUS_TO_WORK'
+
+};

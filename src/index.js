@@ -28,6 +28,7 @@ ReactDOM.render(
             <Switch>
                 <RouteWishApp exact path='/' Component={Journal}/>
                 <RouteWishApp path='/info' Component={Info} />
+                <RouteWishApp  Component={Info}/>
                 {/*<RouteWishApp path='/journal' Component={Journal}/>
                 <RouteWishApp path='/settings' Component={Settings} />
                 <RouteWishApp path='/history' Component={History} />

@@ -14,7 +14,9 @@ class App extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            auth: true
+            auth: true,
+            active: 'active',
+            activeComponent: null
         };
     }
 
@@ -28,27 +30,31 @@ class App extends Component {
         this.setState({auth: !this.state.auth})
     };
 
+    testHandle = (e) => {
+        console.log(e.target, '<----------------', window.location.href);
+    };
+
     render() {
         return (
             localStorage.getItem('token') ?
                 <Grid className={'wrap'} fluid>
                     <Row className={'topbar'}>
-                        <Col xs={2} className={'topbar-left'}>
+                        <Col xs={2} > {/*className={'topbar-left'}*/}
                             <img src={logo} className="App-logo" alt="logo"/>
 
-                        </Col>
-                        <Col xs={8}>
+
 
                         </Col>
-                        <Col xs={2}>
+
+                        <Col xsOffset={7} xs={3}>
                             <Userinfo userInfo={this.props.userInfo} logout={this.logout}/>
                         </Col>
                     </Row>
                     <Row>
                         <Col xs={2} className={'side-menu'}>
-                            <ul className={'side-menu--block'}>
-                                <li className={'side-menu--title'}>Navigation</li>
-                                <li><Link to={`/`} className={'side-menu--link active'}><Glyphicon glyph="time" className={'side-menu--icon'}/><span>Журнал</span></Link></li>
+                            <ul className={'side-menu--block'} onClick={this.testHandle}>
+                                <li className={'side-menu--title'} >Navigation</li>
+                                <li><Link to={`/`} className={'side-menu--link ' + this.state.active}><Glyphicon glyph="time" className={'side-menu--icon'}/><span>Журнал</span></Link></li>
                                 <li><a className={'side-menu--link'}><Glyphicon glyph="book" className={'side-menu--icon'}/><span>История</span></a></li>
                                 <li><Link to={`/info`} className={'side-menu--link'}><Glyphicon glyph="info-sign" className={'side-menu--icon'}/><span>Информация</span></Link></li>
                                 <li><a className={'side-menu--link'}><Glyphicon glyph="cog" className={'side-menu--icon'}/><span>Настройки</span></a></li>
