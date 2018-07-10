@@ -6,7 +6,7 @@ import {Glyphicon} from 'react-bootstrap';
 import {Grid, Row, Col} from 'react-bootstrap';
 import Auth from './components/auth';
 import {connect} from 'react-redux';
-import {actionGetUserInfo, actionGetAllRoles, actionGetAllTesting} from "./common/action";
+import {actionGetUserInfo, actionGetAllRoles, actionGetAllTesting, actionGetAllDevice} from "./common/action";
 import {Link} from 'react-router-dom';
 import Userinfo from './components/userInfo';
 
@@ -20,6 +20,7 @@ class App extends Component {
 
     componentDidMount () {
        this.props.actionGetUserInfo();
+       this.props.actionGetAllDevice();
     }
 
     logout = () => {
@@ -54,9 +55,7 @@ class App extends Component {
                             </ul>
                         </Col>
                         <Col xs={10} className={'content-page'}>
-                            <div >
                             {this.props.children}
-                            </div>
                         </Col>
                     </Row>
 
@@ -72,5 +71,6 @@ const mapStateToProps = (state) => ({
 export default connect(mapStateToProps, {
     actionGetUserInfo,
     actionGetAllRoles,
-    actionGetAllTesting
+    actionGetAllTesting,
+    actionGetAllDevice
 })(App);
