@@ -1,7 +1,8 @@
 import React from 'react';
-import {Tabs, Tab, Button, Table} from 'react-bootstrap';
+import {Tabs, Tab} from 'react-bootstrap';
 import {connect} from 'react-redux';
 import {getDeviceOS} from "../settings/action";
+import SettingDevices from '../settings-devices';
 
 class Settings extends React.Component {
     componentDidMount () {
@@ -20,22 +21,7 @@ class Settings extends React.Component {
                         Tab 1 content
                     </Tab>
                     <Tab eventKey={2} title="Девайсы">
-                        <Button bsStyle="success">Добавить новый девайс</Button>
-                        <Table responsive>
-                            <thead>
-                            <tr>
-                                <th>Устройство</th>
-                                <th>Версия ОС</th>
-                                <th>Разрешение экрана</th>
-                                <th>Комментарий</th>
-                                <th></th>
-                                <th></th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            {/*{this.renderDevicesTable(this.props.devices)}*/}
-                            </tbody>
-                        </Table>
+                        <SettingDevices/>
                     </Tab>
 
                 </Tabs>

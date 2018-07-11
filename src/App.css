@@ -34,7 +34,7 @@ body {
   to { transform: rotate(360deg); }
 }
 
-.active {
+.active-left-menu {
   color: #23b195 !important;
 }
 
@@ -259,4 +259,8 @@ body {
 }
 .comment-buttons span:hover {
   color: #23b195;
+}
+
+.btn-new-entity{
+  margin: 15px 0;
 }
