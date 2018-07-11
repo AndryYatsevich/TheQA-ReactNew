@@ -9,6 +9,8 @@ import {connect} from 'react-redux';
 import {actionGetUserInfo, actionGetAllRoles, actionGetAllTesting, actionGetAllDevice} from "./common/action";
 import {Link} from 'react-router-dom';
 import Userinfo from './components/userInfo';
+import Menu from './components/leftMenu';
+
 
 class App extends Component {
     constructor(props) {
@@ -31,10 +33,32 @@ class App extends Component {
     };
 
     testHandle = (e) => {
-        console.log(e.target, '<----------------', window.location.href);
+        console.log(e.target, '<----------------', window.location.pathname, this.context);
     };
 
     render() {
+        let menu = [
+            {
+                title: 'Журнал',
+                path: '/',
+                icon: 'time'
+            },
+            {
+                title: 'История',
+                path: '/history',
+                icon: 'book'
+            },
+            {
+                title: 'Информация',
+                path: '/info',
+                icon: 'info-sign'
+            },
+            {
+                title: 'Настройки',
+                path: '/setting',
+                icon: 'cog'
+            },
+        ];
         return (
             localStorage.getItem('token') ?
                 <Grid className={'wrap'} fluid>
@@ -54,10 +78,7 @@ class App extends Component {
                         <Col xs={2} className={'side-menu'}>
                             <ul className={'side-menu--block'} onClick={this.testHandle}>
                                 <li className={'side-menu--title'} >Navigation</li>
-                                <li><Link to={`/`} className={'side-menu--link ' + this.state.active}><Glyphicon glyph="time" className={'side-menu--icon'}/><span>Журнал</span></Link></li>
-                                <li><a className={'side-menu--link'}><Glyphicon glyph="book" className={'side-menu--icon'}/><span>История</span></a></li>
-                                <li><Link to={`/info`} className={'side-menu--link'}><Glyphicon glyph="info-sign" className={'side-menu--icon'}/><span>Информация</span></Link></li>
-                                <li><a className={'side-menu--link'}><Glyphicon glyph="cog" className={'side-menu--icon'}/><span>Настройки</span></a></li>
+                                <Menu menu={menu}/>
                             </ul>
                         </Col>
                         <Col xs={10} className={'content-page'}>

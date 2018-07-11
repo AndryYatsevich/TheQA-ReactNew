@@ -252,3 +252,11 @@ body {
   padding: 20px;
   margin-bottom: 20px;
 }
+
+.comment-buttons {
+  float: right;
+  cursor: pointer;
+}
+.comment-buttons span:hover {
+  color: #23b195;
+}

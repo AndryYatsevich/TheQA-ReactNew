@@ -11,6 +11,8 @@ import { BrowserRouter as Router, Route, Switch  } from 'react-router-dom';
 import thunk from 'redux-thunk';
 import Journal from './components/journal';
 import Info from './components/info';
+import History from './components/history';
+import Setting from './components/setting';
 
 const store = createStore(rootReducer, composeWithDevTools(applyMiddleware(thunk)));
 
@@ -28,11 +30,9 @@ ReactDOM.render(
             <Switch>
                 <RouteWishApp exact path='/' Component={Journal}/>
                 <RouteWishApp path='/info' Component={Info} />
-                <RouteWishApp  Component={Info}/>
-                {/*<RouteWishApp path='/journal' Component={Journal}/>
-                <RouteWishApp path='/settings' Component={Settings} />
+                <RouteWishApp path='/setting' Component={Setting} />
                 <RouteWishApp path='/history' Component={History} />
-                <RouteWishApp path='/info' Component={Info} />*/}
+                <RouteWishApp  Component={Info}/>
             </Switch>
         </Router>
     </Provider>,

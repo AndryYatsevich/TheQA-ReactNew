@@ -1,9 +1,18 @@
 import React from 'react';
 import {changeStatusToWork, createNewTesting, changeStatusToFree} from './action';
+import {actionEditDevice} from '../../common/action';
 import {Table, Button} from 'react-bootstrap';
 import {connect} from "react-redux";
+import Comment from '../comment';
 
 class Journal extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            comment: null
+        };
+    }
+
     takeToWork = (el) => {
         let date = new Date();
         let testing = {
@@ -55,6 +64,26 @@ class Journal extends React.Component {
 
     };
 
+    changeComment = (e) => {
+        console.log(this.state.comment);
+        this.setState({comment: e.target.value});
+    };
+
+    addComment = (id) => {
+        let comment = {
+            comment: this.state.comment
+        };
+
+        this.props.actionEditDevice(id, comment);
+    };
+
+    deleteComment = (id) => {
+        let comment = {
+            comment: null
+        };
+        this.props.actionEditDevice(id, comment);
+    };
+
     sortArray = (obj1, obj2) => {
         if (obj1.createTs < obj2.createTs) return 1;
         if (obj1.createTs > obj2.createTs) return -1;
@@ -68,11 +97,11 @@ class Journal extends React.Component {
             <td>{this.renderDeviceButton(el)}</td>
             <td>{el.state === 'TAKEN' ? <div>{el.testing.user.name}</div> : ''} </td>
             <td>{el.state === 'TAKEN' ? <div>{el.testing.startTime}</div> : ''}</td>
-            <td>{/*<Comment el={el}
+            <td><Comment el={el}
                                 changeComment={this.changeComment}
                                 addComment={this.addComment}
                                 deleteComment={this.deleteComment}
-                                userInfo={this.props.userInfo}/>*/}</td>
+                                userInfo={this.props.userInfo}/></td>
         </tr>
     }));
 
@@ -112,5 +141,6 @@ const mapStateToProps = (state) => ({
 export default connect(mapStateToProps, {
     createNewTesting,
     changeStatusToWork,
-    changeStatusToFree
+    changeStatusToFree,
+    actionEditDevice,
 })(Journal);
