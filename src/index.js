@@ -12,7 +12,7 @@ import thunk from 'redux-thunk';
 import Journal from './components/journal';
 import Info from './components/info';
 import History from './components/history';
-import Setting from './components/setting';
+import Settings from './components/settings';
 
 const store = createStore(rootReducer, composeWithDevTools(applyMiddleware(thunk)));
 
@@ -30,7 +30,7 @@ ReactDOM.render(
             <Switch>
                 <RouteWishApp exact path='/' Component={Journal}/>
                 <RouteWishApp path='/info' Component={Info} />
-                <RouteWishApp path='/setting' Component={Setting} />
+                <RouteWishApp path='/settings' Component={Settings} />
                 <RouteWishApp path='/history' Component={History} />
                 <RouteWishApp  Component={Info}/>
             </Switch>

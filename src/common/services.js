@@ -33,7 +33,7 @@ return fetch('http://localhost:8080/app/rest/v2/oauth/token', {
     },
 
     getAllDevice: function () {
-        return fetch('http://localhost:8080/app/rest/api/device/getAll',  {
+        return fetch('http://localhost:8080/app/rest/v2/entities/testersjournal$Device?view=device-with-all',  {
             method: "GET",
             headers: {
                 "Authorization": "Bearer " + localStorage.getItem('token'),

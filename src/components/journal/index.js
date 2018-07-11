@@ -1,6 +1,6 @@
 import React from 'react';
 import {changeStatusToWork, createNewTesting, changeStatusToFree} from './action';
-import {actionEditDevice} from '../../common/action';
+import {actionEditDevice, actionGetAllDevice} from '../../common/action';
 import {Table, Button} from 'react-bootstrap';
 import {connect} from "react-redux";
 import Comment from '../comment';
@@ -12,6 +12,13 @@ class Journal extends React.Component {
             comment: null
         };
     }
+    componentDidMount() {
+            this.props.actionGetAllDevice();
+            setInterval(() => {
+                this.props.actionGetAllDevice();
+                console.log('work');
+            },10000);
+        }
 
     takeToWork = (el) => {
         let date = new Date();
@@ -52,14 +59,18 @@ class Journal extends React.Component {
         if (el.state === 'FREE') {
             return <Button bsStyle="success" onClick={() => this.takeToWork(el)}>Взять в работу</Button>
         }
-        if(el.state === 'TAKEN' && this.props.userInfo && el.testing.user.id === this.props.userInfo.id) {
-            return <Button bsStyle="warning" onClick={() => this.returnDevice(el)}>Сдать</Button>
-        }
+
         if (el.state === 'WAIT' && this.props.userInfo && this.props.userInfo.roles[0] !== 'Administrators') {
             return <div>Ожидает подтверждения администратора</div>
 
         } else if(el.state === 'WAIT' && this.props.userInfo && this.props.userInfo.roles[0] === 'Administrators') {
             return <Button bsStyle="danger" onClick={() => this.acceptAdmin(el)}>Подтвердить списание</Button>
+        }
+
+        if(el.state === 'TAKEN' && this.props.userInfo && el.testing.user.id === this.props.userInfo.id) {
+            return <Button bsStyle="warning" onClick={() => this.returnDevice(el)}>Сдать</Button>
+        } else {
+            return <p>Девайс занят</p>
         }
 
     };
@@ -110,7 +121,6 @@ class Journal extends React.Component {
                 <h4 className={'content-title'}>Журнал устройств</h4>
                 <div className={'content-box'}>
             <Table responsive>
-                {console.log(this.props, '------------------')}
                 <thead>
                 <tr>
                     <th>Устройство</th>
@@ -143,4 +153,5 @@ export default connect(mapStateToProps, {
     changeStatusToWork,
     changeStatusToFree,
     actionEditDevice,
+    actionGetAllDevice
 })(Journal);

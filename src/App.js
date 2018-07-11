@@ -55,7 +55,7 @@ class App extends Component {
             },
             {
                 title: 'Настройки',
-                path: '/setting',
+                path: '/settings',
                 icon: 'cog'
             },
         ];

@@ -34,8 +34,8 @@ class Comment extends React.Component {
                 onChange={this.props.changeComment}
                 defaultValue={this.props.el.comment}
             />, <div className={'comment-buttons'}>
-                <Glyphicon glyph={'plus'} className={'side-menu--icon'} onClick={this.acceptEditingComment}/>
-                <Glyphicon glyph={'trash'} className={'side-menu--icon'} onClick={this.cancelEditingComment}/>
+                <Glyphicon glyph={'ok'} className={'side-menu--icon'} onClick={this.acceptEditingComment}/>
+                <Glyphicon glyph={'remove'} className={'side-menu--icon'} onClick={this.cancelEditingComment}/>
             </div>
 
         ]);
@@ -59,7 +59,9 @@ class Comment extends React.Component {
         if(this.props.el.state === 'TAKEN' && this.props.userInfo && this.props.el.testing.user.id === this.props.userInfo.id )
         {
             return (
+                <div className={'comment-buttons'}>
                     <Glyphicon glyph={'plus'} className={'side-menu--icon'} onClick={ () => this.editingComment(this.props.el)}/>
+                </div>
 
             )
         }
