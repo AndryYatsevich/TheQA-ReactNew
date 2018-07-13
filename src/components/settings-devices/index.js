@@ -7,9 +7,11 @@ import {actionAddNewDevice, actionDeleteDevice, actionEditDevice} from '../../co
 class SettingsDevices extends React.Component {
     constructor(props) {
         super(props);
-        this.handleClose = this.handleClose.bind(this);
+        this.handleCloseAddModal = this.handleCloseAddModal.bind(this);
+        this.handleCloseDeleteModal = this.handleCloseDeleteModal.bind(this);
         this.state = {
-            show: false,
+            showAddModal: false,
+            showDeleteModal: false,
             value: null
         };
     }
@@ -21,12 +23,19 @@ class SettingsDevices extends React.Component {
 
     }
 
-    handleShow() {
-        this.setState({show: true});
+    handleShowAddModal() {
+        this.setState({showAddModal: true});
     }
 
-    handleClose() {
-        this.setState({show: false});
+    handleCloseAddModal() {
+        this.setState({showAddModal: false});
+    }
+    handleShowDeleteModal() {
+        this.setState({showDeleteModal: true});
+    }
+
+    handleCloseDeleteModal() {
+        this.setState({showDeleteModal: false});
     }
 
     changeDeviceTitle = (e) => {
@@ -55,11 +64,11 @@ class SettingsDevices extends React.Component {
             <td>
                 <Glyphicon glyph={'edit'}
                            className={'side-menu--icon'}
-                           onClick={() => this.editDevice(el)}/>
+                           onClick={() => this.handleShowDeleteModal(el)}/>
 
                 <Glyphicon glyph={'trash'}
                            className={'side-menu--icon'}
-                           onClick={() => this.deleteDevice(el.id)}/>
+                           onClick={() => this.handleShowDeleteModal(el)}/>
             </td>
         </tr>)
     }));
@@ -82,7 +91,6 @@ class SettingsDevices extends React.Component {
             screenResolution: this.state.screenResolution,
             state: 'FREE'
         };
-        console.log('device -------------------------> ', device);
         this.props.actionAddNewDevice(device);
         this.setState({
             show: false,
@@ -97,7 +105,7 @@ class SettingsDevices extends React.Component {
         return (<div>
                 <Button bsStyle="success"
                         className={'btn-new-entity'}
-                        onClick={() => this.handleShow()}>Добавить новый девайс</Button>
+                        onClick={() => this.handleShowAddModal()}>Добавить новый девайс</Button>
                 <Table responsive>
                     <thead>
                     <tr>
@@ -112,7 +120,7 @@ class SettingsDevices extends React.Component {
                     {this.renderDevicesTable(this.props.devices)}
                     </tbody>
                 </Table>
-                <Modal show={this.state.show} onHide={this.handleClose}>
+                <Modal show={this.state.showAddModal} onHide={this.handleCloseAddModal}>
 
                     <Modal.Header closeButton>
                         <Modal.Title>Новый девайс</Modal.Title>
@@ -170,9 +178,19 @@ class SettingsDevices extends React.Component {
                         <Button onClick={this.handleClose}>Закрыть</Button>
                         <Button bsStyle="success" onClick={this.addDevice}>Добавить</Button>
                     </Modal.Footer>
-
                 </Modal>
+                <Modal show={this.state.showDeleteModal} onHide={this.handleCloseDeleteModal}>
+                    <Modal.Header>
+                        <Modal.Title> Удаление девайса</Modal.Title>
+                    </Modal.Header>
 
+                    <Modal.Body>Вы действительно хотите удалить {console.log(this.context)}</Modal.Body>
+
+                    <Modal.Footer>
+                        <Button>Close</Button>
+                        <Button bsStyle="primary">Save changes</Button>
+                    </Modal.Footer>
+                </Modal>
             </div>
 
 
