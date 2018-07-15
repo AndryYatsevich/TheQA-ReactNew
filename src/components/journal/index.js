@@ -93,6 +93,9 @@ class Journal extends React.Component {
             comment: null
         };
         this.props.actionEditDevice(id, comment);
+        this.setState({
+            comment: null
+        });
     };
 
     sortArray = (obj1, obj2) => {

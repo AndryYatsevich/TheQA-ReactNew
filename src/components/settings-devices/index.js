@@ -12,7 +12,11 @@ class SettingsDevices extends React.Component {
         this.state = {
             showAddModal: false,
             showDeleteModal: false,
-            value: null
+            editingDevice: false,
+            value: null,
+            deviceTitle: null,
+            description: null,
+            screenResolution: null
         };
     }
 
@@ -28,10 +32,35 @@ class SettingsDevices extends React.Component {
     }
 
     handleCloseAddModal() {
-        this.setState({showAddModal: false});
+        this.setState({
+            showAddModal: false,
+            editingDevice: false,
+            value: null,
+            deviceTitle: null,
+            description: null,
+            screenResolution: null
+        });
     }
-    handleShowDeleteModal() {
-        this.setState({showDeleteModal: true});
+
+    handleShowEditModal(el) {
+        console.log(el);
+        this.setState({
+            showAddModal: true,
+            editingDevice: true,
+            editingDeviceId: el.id,
+            deviceTitle: el.name,
+            value: el.deviceOs.id,
+            description: el.description,
+            screenResolution: el.screenResolution
+        });
+    }
+
+    handleShowDeleteModal(el) {
+        this.setState({
+            showDeleteModal: true,
+            deletedDeviceName: el.name,
+            deletedDeviceId: el.id
+        });
     }
 
     handleCloseDeleteModal() {
@@ -63,11 +92,11 @@ class SettingsDevices extends React.Component {
             <td> {el.comment}</td>
             <td>
                 <Glyphicon glyph={'edit'}
-                           className={'side-menu--icon'}
-                           onClick={() => this.handleShowDeleteModal(el)}/>
+                           className={'settings--icon '}
+                           onClick={() => this.handleShowEditModal(el)}/>
 
                 <Glyphicon glyph={'trash'}
-                           className={'side-menu--icon'}
+                           className={'settings--icon'}
                            onClick={() => this.handleShowDeleteModal(el)}/>
             </td>
         </tr>)
@@ -93,12 +122,40 @@ class SettingsDevices extends React.Component {
         };
         this.props.actionAddNewDevice(device);
         this.setState({
-            show: false,
+            showAddModal: false,
             deviceTitle: '',
             description: '',
             screenResolution: '',
             value: false,
         })
+    };
+
+    acceptEditDevice = () => {
+        let device = {
+            description: this.state.description,
+            deviceOs: {
+                _entityName: "testersjournal$OperationSystem",
+                id: this.state.value,
+            },
+            name: this.state.deviceTitle,
+            screenResolution: this.state.screenResolution,
+        };
+        this.props.actionEditDevice(this.state.editingDeviceId, device);
+        this.setState({
+            showAddModal: false,
+            editingDevice: false,
+            value: null,
+            deviceTitle: null,
+            description: null,
+            screenResolution: null,
+            editingDeviceId: false,
+        });
+        console.log(this.state);
+    };
+
+    deleteDevice = () => {
+        this.props.actionDeleteDevice(this.state.deletedDeviceId);
+        this.handleCloseDeleteModal();
     };
 
     render() {
@@ -120,10 +177,13 @@ class SettingsDevices extends React.Component {
                     {this.renderDevicesTable(this.props.devices)}
                     </tbody>
                 </Table>
+                {/*модалка добавления новго девайса */}
                 <Modal show={this.state.showAddModal} onHide={this.handleCloseAddModal}>
 
                     <Modal.Header closeButton>
-                        <Modal.Title>Новый девайс</Modal.Title>
+                        {this.state.editingDevice ?
+                            <Modal.Title>Редактирования девайса</Modal.Title> :
+                            <Modal.Title>Новый девайс</Modal.Title>}
                     </Modal.Header>
 
                     <Modal.Body>
@@ -135,6 +195,7 @@ class SettingsDevices extends React.Component {
                                 <FormControl
                                     type="text"
                                     placeholder="Введите название устройства"
+                                    defaultValue={this.state.deviceTitle}
                                     onChange={this.changeDeviceTitle}
                                 />
                             </FormGroup>
@@ -145,7 +206,7 @@ class SettingsDevices extends React.Component {
                                     componentClass="select"
                                     placeholder="select"
                                     onChange={this.changeOS}>
-                                    <option disabled>Выберите героя</option>
+                                    <option disabled>Выберите ОС</option>
                                     {this.renderOsSelectedField(this.props.deviceOS)}
                                 </FormControl>
                             </FormGroup>
@@ -156,6 +217,7 @@ class SettingsDevices extends React.Component {
                                 <FormControl
                                     type="text"
                                     placeholder="Введите версию ОС"
+                                    defaultValue={this.state.description}
                                     onChange={this.changeDescription}
                                 />
 
@@ -167,6 +229,7 @@ class SettingsDevices extends React.Component {
                                 <FormControl
                                     type="text"
                                     placeholder="Введите разрешение экрана"
+                                    defaultValue={this.state.screenResolution}
                                     onChange={this.changeScreenResolution}
                                 />
 
@@ -176,24 +239,25 @@ class SettingsDevices extends React.Component {
 
                     <Modal.Footer>
                         <Button onClick={this.handleClose}>Закрыть</Button>
-                        <Button bsStyle="success" onClick={this.addDevice}>Добавить</Button>
+                        {this.state.editingDevice ?
+                            <Button bsStyle="success" onClick={this.acceptEditDevice}>Сохранить изменения</Button> :
+                            <Button bsStyle="success" onClick={this.addDevice}>Добавить</Button>}
                     </Modal.Footer>
                 </Modal>
+                {/*модалка подтверждения удаления девайса */}
                 <Modal show={this.state.showDeleteModal} onHide={this.handleCloseDeleteModal}>
                     <Modal.Header>
                         <Modal.Title> Удаление девайса</Modal.Title>
                     </Modal.Header>
 
-                    <Modal.Body>Вы действительно хотите удалить {console.log(this.context)}</Modal.Body>
+                    <Modal.Body>Вы действительно хотите удалить <b>{this.state.deletedDeviceName}</b>?</Modal.Body>
 
                     <Modal.Footer>
-                        <Button>Close</Button>
-                        <Button bsStyle="primary">Save changes</Button>
+                        <Button bsStyle={'warning'} onClick={this.deleteDevice}>Удалить</Button>
+                        <Button bsStyle="default" onClick={this.handleCloseDeleteModal}>Отмена</Button>
                     </Modal.Footer>
                 </Modal>
             </div>
-
-
         );
     }
 }

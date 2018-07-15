@@ -11,7 +11,7 @@ body {
 
 .App-logo {
   animation: App-logo-spin infinite 20s linear;
-  height: 80px;
+  height: 70px;
 }
 
 .App-header {
@@ -263,4 +263,19 @@ body {
 
 .btn-new-entity{
   margin: 15px 0;
+}
+
+.settings--icon {
+  display: inline-block;
+  font-size: 18px;
+  line-height: 17px;
+  margin: 0 10px 0 3px;
+  text-align: center;
+  vertical-align: middle;
+  width: 20px;
+}
+
+.settings--icon:hover {
+  cursor: pointer;
+  color: #23b195;
 }
