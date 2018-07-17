@@ -9,6 +9,8 @@ export default (state = [], action) => {
             return {...state, devices: action.payload};
         case commonAction.GET_ALL_ROLES:
             return {...state, roles: action.payload};
+        case commonAction.GET_ALL_OS:
+            return {...state, os: action.payload};
         case commonAction.GET_ALL_TESTING:
             return {...state, testing: action.payload};
         case commonAction.CHANGE_STATUS_TO_WORK:

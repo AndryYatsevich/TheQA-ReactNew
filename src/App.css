@@ -279,3 +279,6 @@ body {
   cursor: pointer;
   color: #23b195;
 }
+.settings-btn{
+  float: right;
+}

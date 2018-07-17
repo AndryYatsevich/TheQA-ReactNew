@@ -4,6 +4,7 @@ import {connect} from 'react-redux';
 import {getDeviceOS} from '../settings/action';
 import {actionAddNewDevice, actionDeleteDevice, actionEditDevice} from '../../common/action';
 
+
 class SettingsDevices extends React.Component {
     constructor(props) {
         super(props);

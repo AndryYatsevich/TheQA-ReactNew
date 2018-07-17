@@ -43,10 +43,19 @@ export const actionGetAllDevice = () => (dispatch) => {
 export const actionGetAllRoles = () => (dispatch) => {
     services.getAllRoles()
         .then((roles) => {
-            console.log(roles);
             dispatch({
                 type: commonAction.GET_ALL_ROLES,
                 payload: roles
+            });
+        })
+};
+
+export const actionGetAllOS = () => (dispatch) =>{
+    services.getAllOS()
+        .then((os) => {
+            dispatch({
+                type: commonAction.GET_ALL_OS,
+                payload: os
             });
         })
 };
