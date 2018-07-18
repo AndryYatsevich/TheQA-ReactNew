@@ -25,6 +25,7 @@ export default {
                 "Content-Type": "application/x-www-form-urlencoded"
             }
         }).then((response) => {
+            if (response.status !== 200) localStorage.removeItem('token');
             return response.text();
         }).catch((err) => {
             console.log('An error occurred!', err);
@@ -39,6 +40,7 @@ export default {
                 "Content-Type": "application/x-www-form-urlencoded"
             }
         }).then((response) => {
+            if (response.status !== 200) localStorage.removeItem('token');
             return response.json();
         }).catch((err) => {
             console.log('An error occurred!', err);

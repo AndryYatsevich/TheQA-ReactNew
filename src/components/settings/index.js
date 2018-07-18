@@ -27,6 +27,31 @@ class Settings extends React.Component {
                                 getRequiredData={this.props.getAllUsers}
                                 tableContent={this.props.users}
                                 model={['login', 'name', 'roles','','btn']}
+                                addEntity={'Добавить нового пользователя'}
+                                editEntity={'Редактирование пользователя'}
+                                deleteEntity={'Удаление пользователя'}
+                                modalField={[
+                                    {
+                                        title: 'Логин',
+                                        placeholder: 'Введите логин'
+                                    },
+                                    {
+                                        title: 'Пароль',
+                                        placeholder: 'Введите пароль'
+                                    },
+                                    {
+                                        title: 'ФИО',
+                                        placeholder: 'Введите ФИО'
+                                    },
+                                    {
+                                        title: 'Email',
+                                        placeholder: 'Введите email'
+                                    },
+                                    {
+                                        type: 'options',
+                                        options: this.props.roles
+                                    }
+                                ]}
                             />
                         </Tab>
                         <Tab eventKey={2} title="Девайсы">
@@ -39,6 +64,15 @@ class Settings extends React.Component {
                                 getRequiredData={this.props.actionGetAllRoles}
                                 tableContent={this.props.roles}
                                 model={['name', 'btn']}
+                                addEntuty={'Добавить роль'}
+                                editEntity={'Редактирование роли'}
+                                deleteEntity={'Удаление роли'}
+                                modalField={[
+                                    {
+                                        title: 'Роль',
+                                        placeholder: 'Введите роль'
+                                    }
+                                ]}
                             />
                         </Tab>
                         <Tab eventKey={4} title="Операционые системы">
@@ -48,6 +82,15 @@ class Settings extends React.Component {
                                 getRequiredData={this.props.actionGetAllOS}
                                 tableContent={this.props.deviceOS}
                                 model={['name', 'btn']}
+                                addEntuty={'Добавить операционную систему'}
+                                editEntity={'Редактировать операционную систему'}
+                                deleteEntity={'Удаление операционной системы'}
+                                modalField={[
+                                    {
+                                        title: 'Операционная система',
+                                        placeholder: 'Введите название ОС'
+                                    }
+                                    ]}
                             />
                         </Tab>
 

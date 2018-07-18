@@ -13,7 +13,8 @@ class Journal extends React.Component {
         };
     }
     componentDidMount() {
-            this.props.actionGetAllDevice();
+        if (localStorage.getItem('token')) this.props.actionGetAllDevice();
+
             setInterval(() => {
                 this.props.actionGetAllDevice();
                 console.log('work');

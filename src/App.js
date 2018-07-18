@@ -24,7 +24,6 @@ class App extends Component {
 
     componentDidMount () {
        this.props.actionGetUserInfo();
-       this.props.actionGetAllDevice();
     }
 
     logout = () => {

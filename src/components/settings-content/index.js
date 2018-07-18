@@ -2,6 +2,49 @@ import React from 'react';
 import {Button, Table, Glyphicon, Modal, FormGroup, ControlLabel, FormControl} from 'react-bootstrap';
 
 class SettingsContent extends React.Component {
+    constructor(props) {
+        super(props);
+        this.handleCloseAddModal = this.handleCloseAddModal.bind(this);
+        this.handleCloseDeleteModal = this.handleCloseDeleteModal.bind(this);
+        this.state = {
+            showAddModal: false,
+            showDeleteModal: false,
+            editingDevice: false,
+            value: null,
+            deviceTitle: null,
+            description: null,
+            screenResolution: null
+        };
+    }
+
+    handleShowAddModal() {
+        this.setState({showAddModal: true});
+    }
+
+    handleCloseAddModal() {
+        this.setState({
+            showAddModal: false,
+            editingDevice: false,
+            value: null,
+            deviceTitle: null,
+            description: null,
+            screenResolution: null
+        });
+    }
+
+
+    handleShowDeleteModal(el) {
+        this.setState({
+            showDeleteModal: true,
+            deletedDeviceName: el.name,
+            deletedDeviceId: el.id
+        });
+    }
+
+    handleCloseDeleteModal() {
+        this.setState({showDeleteModal: false});
+    }
+
     componentDidMount() {
         console.log('=============>', typeof this.props.getRequiredData);
         this.props.getRequiredData();
@@ -26,7 +69,7 @@ class SettingsContent extends React.Component {
 
         if (model[model.length - 1] === 'btn') {
             tableRow.push(<td>
-                <div  className={'settings-btn'}>
+                <div className={'settings-btn'}>
                     <Glyphicon glyph={'edit'}
                                className={'settings--icon '}
                                onClick={() => this.handleShowEditModal(el)}/>
@@ -41,17 +84,43 @@ class SettingsContent extends React.Component {
     };
 
     tableContentRender = (array, model) => (array && array.map((el, key) => {
-        return <tr key={key}>{this.takoe(el, model)}
-            {console.log('--------->', typeof el, el, model)}
-            {/*{el.map(el1 => {
-            return <td>{el1} </td>
-        })}*/}</tr>
+        return <tr key={key}>{this.takoe(el, model)}</tr>
     }));
 
     tableColumnRender = (array) => (array && array.map(el => {
         return <th>{el}</th>
     }));
 
+    renderAddModal = (array) => (array && array.map(el => {
+        console.log(el, el.type === 'options');
+        return (el.type === 'options' ?
+            <FormGroup
+                controlId="formBasicText">
+                <ControlLabel>Операционная система:</ControlLabel>
+                <FormControl
+                    componentClass="select"
+                    placeholder="select"
+                    onChange={this.changeOS}>
+                    <option disabled>Выберите ОС</option>
+                    {this.renderOptionField(this.props.options) }
+                </FormControl>
+            </FormGroup>
+           :
+            <FormGroup
+            controlId="formBasicText"
+        >
+            <ControlLabel>{el.title}</ControlLabel>
+            <FormControl
+                type="text"
+                placeholder={el.placeholder}
+                onChange={this.changeDeviceTitle}
+            />
+        </FormGroup>)
+    }));
+
+    renderOptionField = (array) => (array && array.map((el, key) => {
+        return <option value={el.id} key={key}>{el.name}</option>
+    }));
 
     render() {
         return (<div>
@@ -69,62 +138,17 @@ class SettingsContent extends React.Component {
                     </tbody>
                 </Table>
                 {/*модалка добавления новго девайса */}
-                {/*<Modal show={this.state.showAddModal} onHide={this.handleCloseAddModal}>
+                <Modal show={this.state.showAddModal} onHide={this.handleCloseAddModal}>
 
                     <Modal.Header closeButton>
                         {this.state.editingDevice ?
-                            <Modal.Title>Редактирования девайса</Modal.Title> :
-                            <Modal.Title>Новый девайс</Modal.Title>}
+                            <Modal.Title>{this.props.editEntity}</Modal.Title> :
+                            <Modal.Title>{this.props.addEntity}</Modal.Title>}
                     </Modal.Header>
 
                     <Modal.Body>
                         <form>
-                            <FormGroup
-                                controlId="formBasicText"
-                            >
-                                <ControlLabel>Название устройства:</ControlLabel>
-                                <FormControl
-                                    type="text"
-                                    placeholder="Введите название устройства"
-                                    defaultValue={this.state.deviceTitle}
-                                    onChange={this.changeDeviceTitle}
-                                />
-                            </FormGroup>
-                            <FormGroup
-                                controlId="formBasicText">
-                                <ControlLabel>Операционная система:</ControlLabel>
-                                <FormControl
-                                    componentClass="select"
-                                    placeholder="select"
-                                    onChange={this.changeOS}>
-                                    <option disabled>Выберите ОС</option>
-                                    {this.renderOsSelectedField(this.props.deviceOS)}
-                                </FormControl>
-                            </FormGroup>
-                            <FormGroup
-                                controlId="formBasicText"
-                            >
-                                <ControlLabel>Версия ОС:</ControlLabel>
-                                <FormControl
-                                    type="text"
-                                    placeholder="Введите версию ОС"
-                                    defaultValue={this.state.description}
-                                    onChange={this.changeDescription}
-                                />
-
-                            </FormGroup>
-                            <FormGroup
-                                controlId="formBasicText"
-                            >
-                                <ControlLabel>Разрешение экрана:</ControlLabel>
-                                <FormControl
-                                    type="text"
-                                    placeholder="Введите разрешение экрана"
-                                    defaultValue={this.state.screenResolution}
-                                    onChange={this.changeScreenResolution}
-                                />
-
-                            </FormGroup>
+                            {this.renderAddModal(this.props.modalField)}
                         </form>
                     </Modal.Body>
 
@@ -135,10 +159,10 @@ class SettingsContent extends React.Component {
                             <Button bsStyle="success" onClick={this.addDevice}>Добавить</Button>}
                     </Modal.Footer>
                 </Modal>
-                модалка подтверждения удаления девайса
+                {/*модалка подтверждения удаления девайса*/}
                 <Modal show={this.state.showDeleteModal} onHide={this.handleCloseDeleteModal}>
                     <Modal.Header>
-                        <Modal.Title> Удаление девайса</Modal.Title>
+                        <Modal.Title>{this.props.deleteEntity}</Modal.Title>
                     </Modal.Header>
 
                     <Modal.Body>Вы действительно хотите удалить <b>{this.state.deletedDeviceName}</b>?</Modal.Body>
@@ -147,7 +171,7 @@ class SettingsContent extends React.Component {
                         <Button bsStyle={'warning'} onClick={this.deleteDevice}>Удалить</Button>
                         <Button bsStyle="default" onClick={this.handleCloseDeleteModal}>Отмена</Button>
                     </Modal.Footer>
-                </Modal>*/}
+                </Modal>
             </div>
         );
     }

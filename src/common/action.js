@@ -21,7 +21,6 @@ export const actionGetUserInfo = () => (dispatch) => {
 
     services.getUserInfo()
             .then((userInfo) => {
-            console.log(userInfo);
             dispatch({
                 type: commonAction.GET_USER_INFO,
                 payload: userInfo
