@@ -4,7 +4,7 @@ import {connect} from 'react-redux';
 import {getDeviceOS, getAllUsers} from "../settings/action";
 import SettingDevices from '../settings-devices';
 import SettingsContent from '../settings-content';
-import {actionGetAllOS, actionGetAllRoles} from '../../common/action';
+import {actionGetAllOS, actionGetAllRoles, actionAddNewEntity} from '../../common/action';
 
 class Settings extends React.Component {
 
@@ -33,23 +33,29 @@ class Settings extends React.Component {
                                 modalField={[
                                     {
                                         title: 'Логин',
-                                        placeholder: 'Введите логин'
+                                        placeholder: 'Введите логин',
+                                        handler: 'login'
                                     },
                                     {
                                         title: 'Пароль',
-                                        placeholder: 'Введите пароль'
+                                        placeholder: 'Введите пароль',
+                                        handler: 'password'
                                     },
                                     {
                                         title: 'ФИО',
-                                        placeholder: 'Введите ФИО'
+                                        placeholder: 'Введите ФИО',
+                                        handler: 'fio'
                                     },
                                     {
                                         title: 'Email',
-                                        placeholder: 'Введите email'
+                                        placeholder: 'Введите email',
+                                        handler: 'email'
                                     },
                                     {
                                         type: 'options',
-                                        options: this.props.roles
+                                        title: 'Выберите роль',
+                                        options: this.props.roles,
+                                        handler: 'roleValue'
                                     }
                                 ]}
                             />
@@ -64,13 +70,15 @@ class Settings extends React.Component {
                                 getRequiredData={this.props.actionGetAllRoles}
                                 tableContent={this.props.roles}
                                 model={['name', 'btn']}
-                                addEntuty={'Добавить роль'}
+                                addEntity={'Добавить роль'}
                                 editEntity={'Редактирование роли'}
                                 deleteEntity={'Удаление роли'}
+                                addEntityAction={this.actionAddNewEntity}
                                 modalField={[
                                     {
                                         title: 'Роль',
-                                        placeholder: 'Введите роль'
+                                        placeholder: 'Введите роль',
+                                        handler: 'role'
                                     }
                                 ]}
                             />
@@ -82,13 +90,14 @@ class Settings extends React.Component {
                                 getRequiredData={this.props.actionGetAllOS}
                                 tableContent={this.props.deviceOS}
                                 model={['name', 'btn']}
-                                addEntuty={'Добавить операционную систему'}
+                                addEntity={'Добавить операционную систему'}
                                 editEntity={'Редактировать операционную систему'}
                                 deleteEntity={'Удаление операционной системы'}
                                 modalField={[
                                     {
                                         title: 'Операционная система',
-                                        placeholder: 'Введите название ОС'
+                                        placeholder: 'Введите название ОС',
+                                        handler: 'os'
                                     }
                                     ]}
                             />
@@ -118,7 +127,8 @@ export default connect(mapStateToProps, {
     getDeviceOS,
     actionGetAllOS,
     getAllUsers,
-    actionGetAllRoles
+    actionGetAllRoles,
+    actionAddNewEntity
     /* actionGetAllDevice,
     actionAddNewDevice,
     actionDeleteDevice,

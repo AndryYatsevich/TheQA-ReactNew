@@ -141,4 +141,35 @@ export const actionEditDevice = (id, data) => (dispatch) => {
     })
 };
 
+export const actionAddNewEntity = (data, path, getInfo) => (dispatch) => {
+    console.log(JSON.stringify(data));
+    fetch('http://localhost:8080/app/rest/v2/entities/' + path, {
+        method: "POST",
+        headers: {
+            "Authorization": "Bearer " + localStorage.getItem('token'),
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(data)
+    }).then((response) => {
+        return response.text();
+    }).then((response) =>{
+        console.log(response);
+        if(getInfo === 'role') {
+            takoe.role();
+        }
+
+    })
+};
+
+let takoe = {
+    role: (dispatch) => {
+        return services.getAllRoles()
+            .then((roles) => {
+                dispatch({
+                    type: commonAction.GET_ALL_ROLES,
+                    payload: roles
+                });
+            })
+    }
+};
 

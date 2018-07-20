@@ -9,11 +9,7 @@ class SettingsContent extends React.Component {
         this.state = {
             showAddModal: false,
             showDeleteModal: false,
-            editingDevice: false,
-            value: null,
-            deviceTitle: null,
-            description: null,
-            screenResolution: null
+            editingDevice: false
         };
     }
 
@@ -46,7 +42,6 @@ class SettingsContent extends React.Component {
     }
 
     componentDidMount() {
-        console.log('=============>', typeof this.props.getRequiredData);
         this.props.getRequiredData();
         /*this.props.actionGetAllDevice();
         this.props.getAllUsers();
@@ -54,14 +49,45 @@ class SettingsContent extends React.Component {
 
     }
 
-    takoe = (el, model) => {
+    modalFieldHandler = (el, title) => {
+        console.log(el, title);
+        let obj = {};
+        obj[title] = el.target.value;
+        this.setState(obj);
+        console.log(this.state);
+    };
+
+    modalOptionHandler = (e, el) => {
+        console.log(e.target.value, el);
+        let obj = {};
+        obj[el.handler] = e.target.value;
+        this.setState(obj);
+        console.log(this.state);
+    };
+
+    addEntity = () => {
+
+
+        let role = {
+
+            name: this.state.role,
+
+        };
+        this.props.addEntityAction(role, 'sec$Role', 'role');
+        this.setState({
+            showAddModal: false,
+            deviceTitle: '',
+            description: '',
+            screenResolution: '',
+            value: false,
+        })
+    };
+
+    renderTableCell = (el, model) => {
         let tableRow = [];
         for (let key in el) {
-            console.log(key, el[key], '<--------------------------');
             for (let i = 0; i < model.length; i++) {
-                console.log(key, el[key], model[i], '<--------------------------');
                 if (model[i] === key) {
-
                     tableRow.push(<td>{el[key]}</td>);
                 }
             }
@@ -84,7 +110,7 @@ class SettingsContent extends React.Component {
     };
 
     tableContentRender = (array, model) => (array && array.map((el, key) => {
-        return <tr key={key}>{this.takoe(el, model)}</tr>
+        return <tr key={key}>{this.renderTableCell(el, model)}</tr>
     }));
 
     tableColumnRender = (array) => (array && array.map(el => {
@@ -92,17 +118,16 @@ class SettingsContent extends React.Component {
     }));
 
     renderAddModal = (array) => (array && array.map(el => {
-        console.log(el, el.type === 'options');
         return (el.type === 'options' ?
             <FormGroup
                 controlId="formBasicText">
-                <ControlLabel>Операционная система:</ControlLabel>
+                <ControlLabel>{el.title}</ControlLabel>
                 <FormControl
                     componentClass="select"
                     placeholder="select"
-                    onChange={this.changeOS}>
+                    onChange={ (e) => this.modalOptionHandler(e, el)}>
                     <option disabled>Выберите ОС</option>
-                    {this.renderOptionField(this.props.options) }
+                    {this.renderOptionField(el.options) }
                 </FormControl>
             </FormGroup>
            :
@@ -113,7 +138,7 @@ class SettingsContent extends React.Component {
             <FormControl
                 type="text"
                 placeholder={el.placeholder}
-                onChange={this.changeDeviceTitle}
+                onChange={(e) => this.modalFieldHandler(e, el.handler)}
             />
         </FormGroup>)
     }));
@@ -156,7 +181,7 @@ class SettingsContent extends React.Component {
                         <Button onClick={this.handleClose}>Закрыть</Button>
                         {this.state.editingDevice ?
                             <Button bsStyle="success" onClick={this.acceptEditDevice}>Сохранить изменения</Button> :
-                            <Button bsStyle="success" onClick={this.addDevice}>Добавить</Button>}
+                            <Button bsStyle="success" onClick={this.addEntity}>Добавить</Button>}
                     </Modal.Footer>
                 </Modal>
                 {/*модалка подтверждения удаления девайса*/}
