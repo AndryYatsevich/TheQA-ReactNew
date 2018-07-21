@@ -118,7 +118,6 @@ export const actionDeleteDevice = (data) => (dispatch) => {
 
 
 export const actionEditDevice = (id, data) => (dispatch) => {
-    console.log('=========actionEditDevice==============', id, data);
     fetch('http://localhost:8080/app/rest/v2/entities/testersjournal$Device/' + id, {
         method: "PUT",
         headers: {
@@ -152,24 +151,94 @@ export const actionAddNewEntity = (data, path, getInfo) => (dispatch) => {
         body: JSON.stringify(data)
     }).then((response) => {
         return response.text();
-    }).then((response) =>{
-        console.log(response);
-        if(getInfo === 'role') {
-            takoe.role();
+    }).then(() =>{
+        switch (getInfo) {
+            case 'role':
+                return services.getAllRoles()
+                    .then((roles) => {
+                        dispatch({
+                            type: commonAction.GET_ALL_ROLES,
+                            payload: roles
+                        });
+                    });
+            case 'os':
+                return services.getAllOS()
+                    .then((os) => {
+                        dispatch({
+                            type: commonAction.GET_ALL_OS,
+                            payload: os
+                        });
+                    });
+            default:
+                return false;
         }
 
     })
 };
 
-let takoe = {
-    role: (dispatch) => {
-        return services.getAllRoles()
-            .then((roles) => {
-                dispatch({
-                    type: commonAction.GET_ALL_ROLES,
-                    payload: roles
-                });
-            })
-    }
+export const actionDeleteEntity = (path, id, getInfo) => (dispatch) => {
+    fetch('http://localhost:8080/app/rest/v2/entities/'+ path + '/' + id, {
+        method: "DELETE",
+        headers: {
+            "Authorization": "Bearer " + localStorage.getItem('token'),
+            "Content-Type": "application/json"
+        }
+    }).then((response) => {
+        return response.text();
+    }).then(() =>{
+        switch (getInfo) {
+            case 'role':
+                return services.getAllRoles()
+                    .then((roles) => {
+                        dispatch({
+                            type: commonAction.GET_ALL_ROLES,
+                            payload: roles
+                        });
+                    });
+            case 'os':
+                return services.getAllOS()
+                    .then((os) => {
+                        dispatch({
+                            type: commonAction.GET_ALL_OS,
+                            payload: os
+                        });
+                    });
+            default:
+                return false;
+        }
+    })
 };
 
+export const actionEditEntity = (data, path, id, getInfo) => (dispatch) => {
+    fetch('http://localhost:8080/app/rest/v2/entities/'+ path + '/' + id, {
+        method: "PUT",
+        headers: {
+            "Authorization": "Bearer " + localStorage.getItem('token'),
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(data)
+    }).then((response) => {
+        return response.text();
+    }).then(() => {
+        switch (getInfo) {
+            case 'role':
+                return services.getAllRoles()
+                    .then((roles) => {
+                        dispatch({
+                            type: commonAction.GET_ALL_ROLES,
+                            payload: roles
+                        });
+                    });
+            case 'os':
+                return services.getAllOS()
+                    .then((os) => {
+                        dispatch({
+                            type: commonAction.GET_ALL_OS,
+                            payload: os
+                        });
+                    });
+            default:
+                return false;
+        }
+    })
+};

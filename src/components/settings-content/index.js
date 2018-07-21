@@ -13,6 +13,14 @@ class SettingsContent extends React.Component {
         };
     }
 
+    componentDidMount() {
+        this.props.getRequiredData();
+        /*this.props.actionGetAllDevice();
+        this.props.getAllUsers();
+         this.props.getRequiredData();*/
+
+    }
+
     handleShowAddModal() {
         this.setState({showAddModal: true});
     }
@@ -28,29 +36,46 @@ class SettingsContent extends React.Component {
         });
     }
 
+    handleShowEditModal(el) {
+        let state = {
+            showAddModal: true,
+            editingDevice: true,
+        };
+
+
+        /*this.setState({
+            showAddModal: true,
+            editingDevice: true,
+        });*/
+        for (let i = 0; i < this.props.entityField.length; i++) {
+            console.log(i);
+            for (let key in el) {
+                console.log(key, this.props.entityField[i], 'TAKOE????');
+                if (key === this.props.entityField[i]) {
+                    console.log('TAKOE!!!!');
+                    state[key] = el[key]
+                }
+            }
+        }
+        console.log(el, state);
+        this.setState(state);
+    }
 
     handleShowDeleteModal(el) {
         this.setState({
             showDeleteModal: true,
-            deletedDeviceName: el.name,
-            deletedDeviceId: el.id
+            deletedEntityName: el.name,
+            deletedEntityId: el.id
         });
+        console.log(this.state, 'handleShowDeleteModal <<<');
     }
 
     handleCloseDeleteModal() {
         this.setState({showDeleteModal: false});
     }
 
-    componentDidMount() {
-        this.props.getRequiredData();
-        /*this.props.actionGetAllDevice();
-        this.props.getAllUsers();
-         this.props.getRequiredData();*/
-
-    }
 
     modalFieldHandler = (el, title) => {
-        console.log(el, title);
         let obj = {};
         obj[title] = el.target.value;
         this.setState(obj);
@@ -58,22 +83,23 @@ class SettingsContent extends React.Component {
     };
 
     modalOptionHandler = (e, el) => {
-        console.log(e.target.value, el);
         let obj = {};
         obj[el.handler] = e.target.value;
         this.setState(obj);
-        console.log(this.state);
     };
 
     addEntity = () => {
+        let entity = {};
+        for (let i = 0; i < this.props.entityField.length; i++) {
+            for (let key in this.state) {
+                if (key === this.props.entityField[i]) {
+                    entity[this.props.entityField[i]] = this.state[this.props.entityField[i]]
+                }
+            }
+        }
 
-
-        let role = {
-
-            name: this.state.role,
-
-        };
-        this.props.addEntityAction(role, 'sec$Role', 'role');
+        console.log(this.props, typeof this.props.addEntityAction, '---------------------<<<<', entity);
+        this.props.addEntityAction(entity, this.props.path, this.props.entityType);
         this.setState({
             showAddModal: false,
             deviceTitle: '',
@@ -81,6 +107,14 @@ class SettingsContent extends React.Component {
             screenResolution: '',
             value: false,
         })
+    };
+
+    deleteEntity = () => {
+        this.props.deleteEntityAction(
+            this.props.path,
+            this.state.deletedEntityId,
+            this.props.entityType);
+        this.handleCloseDeleteModal();
     };
 
     renderTableCell = (el, model) => {
@@ -125,22 +159,22 @@ class SettingsContent extends React.Component {
                 <FormControl
                     componentClass="select"
                     placeholder="select"
-                    onChange={ (e) => this.modalOptionHandler(e, el)}>
+                    onChange={(e) => this.modalOptionHandler(e, el)}>
                     <option disabled>Выберите ОС</option>
-                    {this.renderOptionField(el.options) }
+                    {this.renderOptionField(el.options)}
                 </FormControl>
             </FormGroup>
-           :
+            :
             <FormGroup
-            controlId="formBasicText"
-        >
-            <ControlLabel>{el.title}</ControlLabel>
-            <FormControl
-                type="text"
-                placeholder={el.placeholder}
-                onChange={(e) => this.modalFieldHandler(e, el.handler)}
-            />
-        </FormGroup>)
+                controlId="formBasicText"
+            >
+                <ControlLabel>{el.title}</ControlLabel>
+                <FormControl
+                    type="text"
+                    placeholder={el.placeholder}
+                    onChange={(e) => this.modalFieldHandler(e, el.handler)}
+                />
+            </FormGroup>)
     }));
 
     renderOptionField = (array) => (array && array.map((el, key) => {
@@ -190,10 +224,13 @@ class SettingsContent extends React.Component {
                         <Modal.Title>{this.props.deleteEntity}</Modal.Title>
                     </Modal.Header>
 
-                    <Modal.Body>Вы действительно хотите удалить <b>{this.state.deletedDeviceName}</b>?</Modal.Body>
+                    <Modal.Body>Вы действительно хотите удалить <b>{this.state.deletedEntityName}</b>?</Modal.Body>
 
                     <Modal.Footer>
-                        <Button bsStyle={'warning'} onClick={this.deleteDevice}>Удалить</Button>
+                        <Button bsStyle={'warning'}
+                                onClick={this.deleteEntity}>
+                            Удалить
+                        </Button>
                         <Button bsStyle="default" onClick={this.handleCloseDeleteModal}>Отмена</Button>
                     </Modal.Footer>
                 </Modal>

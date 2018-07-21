@@ -4,7 +4,7 @@ import {connect} from 'react-redux';
 import {getDeviceOS, getAllUsers} from "../settings/action";
 import SettingDevices from '../settings-devices';
 import SettingsContent from '../settings-content';
-import {actionGetAllOS, actionGetAllRoles, actionAddNewEntity} from '../../common/action';
+import {actionGetAllOS, actionGetAllRoles, actionAddNewEntity, actionDeleteEntity, actionEditEntity} from '../../common/action';
 
 class Settings extends React.Component {
 
@@ -19,7 +19,7 @@ class Settings extends React.Component {
         return (<div className={'content-page-wrap'}>
                 <h4 className={'content-title'}>Настройки</h4>
                 <div className={'content-box'}>
-                    <Tabs defaultActiveKey={2} id="uncontrolled-tab-example">
+                    <Tabs defaultActiveKey={1} id="uncontrolled-tab-example">
                         <Tab eventKey={1} title="Пользователи">
                             <SettingsContent
                                 buttonTitle={'Добавить пользователя'}
@@ -73,12 +73,17 @@ class Settings extends React.Component {
                                 addEntity={'Добавить роль'}
                                 editEntity={'Редактирование роли'}
                                 deleteEntity={'Удаление роли'}
-                                addEntityAction={this.actionAddNewEntity}
+                                addEntityAction={this.props.actionAddNewEntity}
+                                deleteEntityAction={this.props.actionDeleteEntity}
+                                editEntityAction={this.props.actionEditEntity}
+                                entityField = {['name']}
+                                path={'sec$Role'}
+                                entityType={'role'}
                                 modalField={[
                                     {
                                         title: 'Роль',
                                         placeholder: 'Введите роль',
-                                        handler: 'role'
+                                        handler: 'name'
                                     }
                                 ]}
                             />
@@ -93,11 +98,17 @@ class Settings extends React.Component {
                                 addEntity={'Добавить операционную систему'}
                                 editEntity={'Редактировать операционную систему'}
                                 deleteEntity={'Удаление операционной системы'}
+                                addEntityAction={this.props.actionAddNewEntity}
+                                deleteEntityAction={this.props.actionDeleteEntity}
+                                editEntityAction={this.props.actionEditEntity}
+                                entityField = {['name']}
+                                path={'testersjournal$OperationSystem'}
+                                entityType={'os'}
                                 modalField={[
                                     {
                                         title: 'Операционная система',
                                         placeholder: 'Введите название ОС',
-                                        handler: 'os'
+                                        handler: 'name'
                                     }
                                     ]}
                             />
@@ -128,7 +139,9 @@ export default connect(mapStateToProps, {
     actionGetAllOS,
     getAllUsers,
     actionGetAllRoles,
-    actionAddNewEntity
+    actionAddNewEntity,
+    actionDeleteEntity,
+    actionEditEntity
     /* actionGetAllDevice,
     actionAddNewDevice,
     actionDeleteDevice,
