@@ -26,38 +26,30 @@ class SettingsContent extends React.Component {
     }
 
     handleCloseAddModal() {
-        this.setState({
+        let state = {
             showAddModal: false,
-            editingDevice: false,
-            value: null,
-            deviceTitle: null,
-            description: null,
-            screenResolution: null
-        });
+            editingEntity: false,
+            editingEntityId: false
+        };
+        for (let i = 0; i < this.props.entityField.length; i++) {
+                    state[this.props.entityField[i]] = null;
+        }
+        this.setState(state);
     }
 
     handleShowEditModal(el) {
         let state = {
             showAddModal: true,
-            editingDevice: true,
+            editingEntity: true,
+            editingEntityId: el.id
         };
-
-
-        /*this.setState({
-            showAddModal: true,
-            editingDevice: true,
-        });*/
         for (let i = 0; i < this.props.entityField.length; i++) {
-            console.log(i);
             for (let key in el) {
-                console.log(key, this.props.entityField[i], 'TAKOE????');
                 if (key === this.props.entityField[i]) {
-                    console.log('TAKOE!!!!');
                     state[key] = el[key]
                 }
             }
         }
-        console.log(el, state);
         this.setState(state);
     }
 
@@ -88,8 +80,16 @@ class SettingsContent extends React.Component {
         this.setState(obj);
     };
 
+    modalFieldDefaultValue = (el) => {
+        return this.state[el];
+    };
+
     addEntity = () => {
         let entity = {};
+        let state ={
+            showAddModal: false,
+        };
+
         for (let i = 0; i < this.props.entityField.length; i++) {
             for (let key in this.state) {
                 if (key === this.props.entityField[i]) {
@@ -98,15 +98,38 @@ class SettingsContent extends React.Component {
             }
         }
 
-        console.log(this.props, typeof this.props.addEntityAction, '---------------------<<<<', entity);
         this.props.addEntityAction(entity, this.props.path, this.props.entityType);
-        this.setState({
+        for (let i = 0; i < this.props.entityField.length; i++) {
+            state[this.props.entityField[i]] = null;
+        }
+        this.setState(state);
+    };
+
+    acceptEditDevice = () => {
+        let entity = {};
+        let state ={
             showAddModal: false,
-            deviceTitle: '',
-            description: '',
-            screenResolution: '',
-            value: false,
-        })
+            editingEntity: false,
+            editingEntityId: false
+        };
+        for (let i = 0; i < this.props.entityField.length; i++) {
+            for (let key in this.state) {
+                if (key === this.props.entityField[i]) {
+                    entity[this.props.entityField[i]] = this.state[this.props.entityField[i]]
+                }
+            }
+        }
+
+        this.props.editEntityAction(
+            entity,
+            this.props.path,
+            this.state.editingEntityId,
+            this.props.entityType
+        );
+        for (let i = 0; i < this.props.entityField.length; i++) {
+            state[this.props.entityField[i]] = null;
+        }
+        this.setState(state);
     };
 
     deleteEntity = () => {
@@ -152,6 +175,7 @@ class SettingsContent extends React.Component {
     }));
 
     renderAddModal = (array) => (array && array.map(el => {
+
         return (el.type === 'options' ?
             <FormGroup
                 controlId="formBasicText">
@@ -172,6 +196,7 @@ class SettingsContent extends React.Component {
                 <FormControl
                     type="text"
                     placeholder={el.placeholder}
+                    defaultValue={this.modalFieldDefaultValue(el.handler)}
                     onChange={(e) => this.modalFieldHandler(e, el.handler)}
                 />
             </FormGroup>)
@@ -213,7 +238,7 @@ class SettingsContent extends React.Component {
 
                     <Modal.Footer>
                         <Button onClick={this.handleClose}>Закрыть</Button>
-                        {this.state.editingDevice ?
+                        {this.state.editingEntity ?
                             <Button bsStyle="success" onClick={this.acceptEditDevice}>Сохранить изменения</Button> :
                             <Button bsStyle="success" onClick={this.addEntity}>Добавить</Button>}
                     </Modal.Footer>

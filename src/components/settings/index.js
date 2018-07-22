@@ -30,6 +30,7 @@ class Settings extends React.Component {
                                 addEntity={'Добавить нового пользователя'}
                                 editEntity={'Редактирование пользователя'}
                                 deleteEntity={'Удаление пользователя'}
+
                                 modalField={[
                                     {
                                         title: 'Логин',
