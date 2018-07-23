@@ -222,6 +222,22 @@ body {
   vertical-align: middle;
   width: 20px;
 }
+.side-menu--badge {
+  display: inline-block;
+  line-height: 1;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: baseline;
+  border-radius: .25rem;
+  float: right;
+  text-transform: uppercase;
+  font-weight: 600;
+  padding: 3px 5px;
+  font-size: 12px;
+  margin-top: 1px;
+  color: #ffffff;
+  background-color: #23b195;
+}
 
 .content-page {
   margin-left: 240px;

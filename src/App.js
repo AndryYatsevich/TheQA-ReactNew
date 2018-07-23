@@ -2,12 +2,10 @@ import React, {Component} from 'react';
 import logo from './logo.svg';
 import '../node_modules/bootstrap/dist/css/bootstrap.css';
 import './App.css';
-import {Glyphicon} from 'react-bootstrap';
 import {Grid, Row, Col} from 'react-bootstrap';
 import Auth from './components/auth';
 import {connect} from 'react-redux';
 import {actionGetUserInfo, actionGetAllRoles, actionGetAllTesting, actionGetAllDevice} from "./common/action";
-import {Link} from 'react-router-dom';
 import Userinfo from './components/userInfo';
 import Menu from './components/leftMenu';
 
@@ -18,12 +16,14 @@ class App extends Component {
         this.state = {
             auth: true,
             active: 'active',
-            activeComponent: null
+            activeComponent: null,
+            deviceCount: 0
         };
     }
 
     componentDidMount () {
        this.props.actionGetUserInfo();
+       this.props.actionGetAllDevice();
     }
 
     logout = () => {
@@ -31,16 +31,20 @@ class App extends Component {
         this.setState({auth: !this.state.auth})
     };
 
-    testHandle = (e) => {
-        console.log(e.target, '<----------------', window.location.pathname, this.context);
-    };
+
+
+
+
+
 
     render() {
         let menu = [
             {
                 title: 'Журнал',
                 path: '/',
-                icon: 'time'
+                icon: 'time',
+                badge: true,
+                badgeCount: this.state.deviceCount
             },
             {
                 title: 'История',
@@ -62,10 +66,8 @@ class App extends Component {
             localStorage.getItem('token') ?
                 <Grid className={'wrap'} fluid>
                     <Row className={'topbar'}>
-                        <Col xs={2} > {/*className={'topbar-left'}*/}
+                        <Col xs={2} >
                             <img src={logo} className="App-logo" alt="logo"/>
-
-
 
                         </Col>
 
@@ -77,7 +79,10 @@ class App extends Component {
                         <Col xs={2} className={'side-menu'}>
                             <ul className={'side-menu--block'} onClick={this.testHandle}>
                                 <li className={'side-menu--title'} >Navigation</li>
-                                <Menu menu={menu}/>
+                                <Menu menu={menu}
+                                      userInfo={this.props.userInfo}
+                                      devices={this.props.devices}
+                                />
                             </ul>
                         </Col>
                         <Col xs={10} className={'content-page'}>
@@ -91,7 +96,8 @@ class App extends Component {
 }
 
 const mapStateToProps = (state) => ({
-    userInfo: state.common.userInfo
+    userInfo: state.common.userInfo,
+    devices: state.common.devices
 });
 
 export default connect(mapStateToProps, {
