@@ -1,7 +1,7 @@
 import React from 'react';
 import {changeStatusToWork, createNewTesting, changeStatusToFree} from './action';
 import {actionEditDevice, actionGetAllDevice} from '../../common/action';
-import {Table, Button} from 'react-bootstrap';
+import {Table, Button, Glyphicon} from 'react-bootstrap';
 import {connect} from "react-redux";
 import Comment from '../comment';
 
@@ -62,10 +62,10 @@ class Journal extends React.Component {
         }
 
         if (el.state === 'WAIT' && this.props.userInfo && this.props.userInfo.roles[0] !== 'Administrators') {
-            return <div>Ожидает подтверждения администратора</div>
+            return <div>Ожидает списания</div>
 
         } else if(el.state === 'WAIT' && this.props.userInfo && this.props.userInfo.roles[0] === 'Administrators') {
-            return <Button bsStyle="danger" onClick={() => this.acceptAdmin(el)}>Подтвердить списание</Button>
+            return <Button bsStyle="danger" onClick={() => this.acceptAdmin(el)}>Списать</Button>
         }
 
         if(el.state === 'TAKEN' && this.props.userInfo && el.testing.user.id === this.props.userInfo.id) {
@@ -109,14 +109,17 @@ class Journal extends React.Component {
             <td>{el.name}</td>
             <td>{el.deviceOs.name} {el.description}</td>
             <td>{el.screenResolution}</td>
-            <td>{this.renderDeviceButton(el)}</td>
+            <td>{el.state === 'FREE' ? <div className={'device-status-icon--wrap'}> <Glyphicon glyph={'ok-circle'} className={'device-status-icon icon-success'}/></div> :
+                el.state === 'TAKEN' ? <div className={'device-status-icon--wrap'}><Glyphicon glyph={'remove-circle'} className={'device-status-icon success icon-danger'}/></div> :
+                    <div className={'device-status-icon--wrap'}>  <Glyphicon glyph={'time'} className={'device-status-icon success icon-warning'}/></div>}</td>
             <td>{el.state === 'TAKEN' ? <div>{el.testing.user.name}</div> : ''} </td>
-            <td>{el.state === 'TAKEN' ? <div>{el.testing.startTime}</div> : ''}</td>
+            <td>{el.state === 'TAKEN' ? <div>{el.testing.startTime} {Date.parse(el.testing.startTime)}</div> : ''}</td>
             <td><Comment el={el}
                                 changeComment={this.changeComment}
                                 addComment={this.addComment}
                                 deleteComment={this.deleteComment}
                                 userInfo={this.props.userInfo}/></td>
+            <td>{this.renderDeviceButton(el)}</td>
         </tr>
     }));
 

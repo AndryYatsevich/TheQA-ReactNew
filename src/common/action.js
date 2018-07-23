@@ -169,6 +169,15 @@ export const actionAddNewEntity = (data, path, getInfo) => (dispatch) => {
                             payload: os
                         });
                     });
+            case 'device':
+                return services.getAllDevice()
+                    .then((devices) => {
+                        console.log(devices);
+                        dispatch({
+                            type: commonAction.GET_ALL_DEVICE,
+                            payload: devices
+                        });
+                    })
             default:
                 return false;
         }
@@ -203,6 +212,15 @@ export const actionDeleteEntity = (path, id, getInfo) => (dispatch) => {
                             payload: os
                         });
                     });
+            case 'device':
+                return services.getAllDevice()
+                    .then((devices) => {
+                        console.log(devices);
+                        dispatch({
+                            type: commonAction.GET_ALL_DEVICE,
+                            payload: devices
+                        });
+                    })
             default:
                 return false;
         }
@@ -237,6 +255,15 @@ export const actionEditEntity = (data, path, id, getInfo) => (dispatch) => {
                             payload: os
                         });
                     });
+            case 'device':
+                return services.getAllDevice()
+                    .then((devices) => {
+                        console.log(devices);
+                        dispatch({
+                            type: commonAction.GET_ALL_DEVICE,
+                            payload: devices
+                        });
+                    })
             default:
                 return false;
         }

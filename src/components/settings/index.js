@@ -4,7 +4,7 @@ import {connect} from 'react-redux';
 import {getDeviceOS, getAllUsers} from "../settings/action";
 import SettingDevices from '../settings-devices';
 import SettingsContent from '../settings-content';
-import {actionGetAllOS, actionGetAllRoles, actionAddNewEntity, actionDeleteEntity, actionEditEntity} from '../../common/action';
+import {actionGetAllOS, actionGetAllRoles, actionAddNewEntity, actionDeleteEntity, actionEditEntity, actionGetAllDevice} from '../../common/action';
 
 class Settings extends React.Component {
 
@@ -62,7 +62,46 @@ class Settings extends React.Component {
                             />
                         </Tab>
                         <Tab eventKey={2} title="Девайсы">
-                            <SettingDevices/>
+                            <SettingsContent
+                                buttonTitle={'Добавить девайс'}
+                                tableColumn={['Устройство', 'Версия ОС', 'Разрешение экрана', 'Комментарий','']}
+                                getRequiredData={this.props.actionGetAllDevice}
+                                tableContent={this.props.devices}
+                                model={['name',{deviceOs: 'name'}, 'screenResolution', 'comment',  'btn']}
+                                addEntity={'Добавить девайс'}
+                                editEntity={'Редактирование девайса'}
+                                deleteEntity={'Удаление девайса'}
+                                addEntityAction={this.props.actionAddNewEntity}
+                                deleteEntityAction={this.props.actionDeleteEntity}
+                                editEntityAction={this.props.actionEditEntity}
+                                entityField = {['name', 'description', 'screenResolution', 'deviceOs']}
+                                path={'testersjournal$Device'}
+                                entityType={'device'}
+                                modalField={[
+                                    {
+                                        title: 'Название устройства',
+                                        placeholder: 'Введите название устройства',
+                                        handler: 'name'
+                                    },
+                                    {
+                                        title: 'Операционная система',
+                                        type: 'options',
+                                        options: this.props.deviceOS,
+                                        handler: 'deviceOs'
+                                    },
+                                    {
+                                        title: 'Версия операционной системы',
+                                        placeholder: 'Введите версию ОС',
+                                        handler: 'description'
+                                    },
+                                    {
+                                        title: 'Разрешение экрана',
+                                        placeholder: 'Введите разрешение экрана',
+                                        handler: 'screenResolution'
+                                    },
+
+                                ]}
+                            />
                         </Tab>
                         <Tab eventKey={3} title="Роли">
                             <SettingsContent
@@ -136,6 +175,7 @@ const mapStateToProps = (state) => ({
 
 });*/
 export default connect(mapStateToProps, {
+    actionGetAllDevice,
     getDeviceOS,
     actionGetAllOS,
     getAllUsers,

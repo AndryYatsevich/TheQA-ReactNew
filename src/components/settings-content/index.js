@@ -45,9 +45,12 @@ class SettingsContent extends React.Component {
         };
         for (let i = 0; i < this.props.entityField.length; i++) {
             for (let key in el) {
-                if (key === this.props.entityField[i]) {
+                if (key === this.props.entityField[i] && this.props.entityField[i] !== 'deviceOs') {
                     state[key] = el[key]
                 }
+            }
+            if(this.props.entityField[i] === 'deviceOs') {
+                state['deviceOs'] = el.deviceOs.id;
             }
         }
         this.setState(state);
@@ -92,12 +95,19 @@ class SettingsContent extends React.Component {
 
         for (let i = 0; i < this.props.entityField.length; i++) {
             for (let key in this.state) {
+
                 if (key === this.props.entityField[i]) {
                     entity[this.props.entityField[i]] = this.state[this.props.entityField[i]]
                 }
             }
         }
-
+        if (this.props.entityType === 'device') {
+            entity['deviceOs'] = {
+                _entityName: "testersjournal$OperationSystem",
+                id: this.state.deviceOs,
+            };
+            entity['state'] = 'FREE';
+        }
         this.props.addEntityAction(entity, this.props.path, this.props.entityType);
         for (let i = 0; i < this.props.entityField.length; i++) {
             state[this.props.entityField[i]] = null;
@@ -114,11 +124,22 @@ class SettingsContent extends React.Component {
         };
         for (let i = 0; i < this.props.entityField.length; i++) {
             for (let key in this.state) {
-                if (key === this.props.entityField[i]) {
+                if (key === this.props.entityField[i] && key !== 'deviceOs') {
                     entity[this.props.entityField[i]] = this.state[this.props.entityField[i]]
                 }
+
             }
         }
+
+        if (this.props.entityType === 'device') {
+            entity['deviceOs'] = {
+                _entityName: "testersjournal$OperationSystem",
+                id: this.state.deviceOs,
+            };
+            entity['state'] = 'FREE';
+            console.log(entity,'0000000000000000000000');
+        }
+        console.log(entity);
 
         this.props.editEntityAction(
             entity,
@@ -141,13 +162,23 @@ class SettingsContent extends React.Component {
     };
 
     renderTableCell = (el, model) => {
+
         let tableRow = [];
+        for (let i = 0; i < model.length; i++) {
         for (let key in el) {
-            for (let i = 0; i < model.length; i++) {
                 if (model[i] === key) {
                     tableRow.push(<td>{el[key]}</td>);
+                } else if ( typeof model[i] === 'object'){
+                    for (let keyObj in model[i]) {
+                        if(keyObj === key) {
+                            tableRow.push(<td>{el[keyObj].name} {el.description}</td>);
+                        }
+                    }
                 }
             }
+        }
+        if(!el.comment) {
+            tableRow.push(<td></td>);
         }
 
         if (model[model.length - 1] === 'btn') {

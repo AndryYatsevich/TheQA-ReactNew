@@ -282,3 +282,23 @@ body {
 .settings-btn{
   float: right;
 }
+
+.device-status-icon{
+  font-size: 28px;
+  justify-content: center
+}
+.device-status-icon--wrap{
+  text-align:  center;
+}
+
+.icon-danger {
+  color: #d9534f;
+}
+
+.icon-success {
+  color: #5cb85c;
+}
+
+.icon-warning {
+  color: #f0ad4e;
+}
