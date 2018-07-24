@@ -5,6 +5,10 @@ body {
   font-size: 14px;
 }
 
+.journal--table td{
+  vertical-align: middle !important ;
+}
+
 .App {
   text-align: center;
 }
@@ -236,6 +240,12 @@ body {
   font-size: 12px;
   margin-top: 1px;
   color: #ffffff;
+}
+.side-menu--badge-background {
+  background-color: #626773;
+}
+.side-menu--badge-active {
+
   background-color: #23b195;
 }
 
@@ -317,4 +327,12 @@ body {
 
 .icon-warning {
   color: #f0ad4e;
+}
+
+.journal-table--no-device{
+  padding: 20px;
+  text-align: center;
+}
+.journal-table--status-caption{
+  text-align: center;
 }

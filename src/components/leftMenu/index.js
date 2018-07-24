@@ -8,13 +8,15 @@ class leftMenu extends React.Component {
         if(array && userInfo) {
             array.map((el) => {
                 if(el.testing) {
+                    console.log(el, 'takoe o_O');
                     if(el.testing.user.login === userInfo.login){
                         count += 1;
                     }
                 }
             });
         }
-        return <div>{count}</div>
+
+        return count ? <span className={'side-menu--badge side-menu--badge-active'}>{count}</span> : '';
     };
 
     render() {
@@ -26,16 +28,14 @@ class leftMenu extends React.Component {
                             <Link to={el.path} className={'side-menu--link active-left-menu'}>
                                 <Glyphicon glyph={el.icon} className={'side-menu--icon'}/>
                                 <span>{el.title}</span>
-                                {el.badge ?
-                                    <span className={'side-menu--badge'}>
-                                        {this.countDevice(this.props.devices, this.props.userInfo)}
-                                    </span> : ''}
+                                {el.badge ? this.countDevice(this.props.devices, this.props.userInfo) : ''}
                             </Link>
                         </li> :
                     <li>
                         <Link to={el.path} className={'side-menu--link'}>
                             <Glyphicon glyph={el.icon} className={'side-menu--icon'}/>
                             <span>{el.title}</span>
+                            {el.badge ? this.countDevice(this.props.devices, this.props.userInfo) : ''}
                         </Link>
                     </li>
 

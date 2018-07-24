@@ -1,7 +1,7 @@
 import React from 'react';
 import {changeStatusToWork, createNewTesting, changeStatusToFree} from './action';
 import {actionEditDevice, actionGetAllDevice} from '../../common/action';
-import {Table, Button, Glyphicon} from 'react-bootstrap';
+import {Table, Button, Glyphicon, Checkbox, Panel} from 'react-bootstrap';
 import {connect} from "react-redux";
 import Comment from '../comment';
 
@@ -9,7 +9,8 @@ class Journal extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            comment: null
+            comment: null,
+            myDevice: false
         };
     }
 
@@ -121,9 +122,36 @@ class Journal extends React.Component {
         arr.push(takoe.toString());
         return arr;
     };
-    renderDevicesTable = (array) => (array && array.sort(this.sortArray).map((el) => {
+    checkCheckBox = (array, userInfo) => {
+        let myDevice = [];
+            if(this.state.myDevice) {
+                array && userInfo && array.map((el) => {
+                    if(el.testing && el.testing.user.login === userInfo.login) {
+                        myDevice.push(el);
+                    }
+                });
 
-        return <tr key={el.id}>
+                if(myDevice.length !== 0) {
+                    return this.renderDevicesTable(myDevice);
+                } else {
+                    return <tr>
+                        <td colspan="7">
+                            <div className={'journal-table--no-device'}>
+                                <Panel bsStyle="danger">
+                                    <Panel.Body>В данный момент у вас в работе нет ниодного устройства</Panel.Body>
+                                </Panel>
+                            </div>
+                        </td>
+                    </tr>
+                }
+
+            } else {
+                return this.renderDevicesTable(array);
+            }
+    };
+
+    renderDevicesTable = (array) => (array && array.sort(this.sortArray).map((el) => {
+        return <tr key={el.id} className={'journal--table'}>
             <td>{el.name}</td>
             <td>{el.deviceOs.name} {el.description}</td>
             <td>{el.screenResolution}</td>
@@ -136,7 +164,7 @@ class Journal extends React.Component {
                     <div className={'device-status-icon--wrap'}><Glyphicon glyph={'time'}
                                                                            className={'device-status-icon success icon-warning'}/>
                     </div>}</td>
-            <td>{el.state === 'TAKEN' ? <div>{el.testing.user.name}</div> : ''} </td>
+            <td>{el.state === 'TAKEN' ? <div>{el.testing.user.name}</div> : el.state === 'WAIT' ? <div>{el.testing.user.name}</div> : ''} </td>
             <td>{el.state === 'TAKEN' ?
                 <div>{this.renderDate(el.testing.startTime)}</div> : ''}</td>
             <td><Comment el={el}
@@ -148,24 +176,30 @@ class Journal extends React.Component {
         </tr>
     }));
 
+    checkBoxMyDevice = () => {
+      this.setState({myDevice: !this.state.myDevice});
+    };
+
     render() {
         return (<div className={'content-page-wrap'}>
                 <h4 className={'content-title'}>Журнал устройств</h4>
                 <div className={'content-box'}>
+                    <Checkbox onClick={this.checkBoxMyDevice}>Девайсы на мне</Checkbox>
+
                     <Table responsive>
                         <thead>
                         <tr>
                             <th>Устройство</th>
                             <th>Версия ОС</th>
                             <th>Разрешение экрана</th>
-                            <th>Статус</th>
+                            <th className={'journal-table--status-caption'}>Статус</th>
                             <th>Взял в работу</th>
                             <th>Дата/Время</th>
                             <th>Комментарий</th>
                         </tr>
                         </thead>
                         <tbody>
-                        {this.renderDevicesTable(this.props.devices)}
+                        {this.checkCheckBox(this.props.devices, this.props.userInfo)}
                         </tbody>
                     </Table>
                 </div>
