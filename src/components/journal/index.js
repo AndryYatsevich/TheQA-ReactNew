@@ -10,7 +10,8 @@ class Journal extends React.Component {
         super(props);
         this.state = {
             comment: null,
-            myDevice: false
+            myDevice: false,
+            waitingDevice: false
         };
     }
 
@@ -65,7 +66,7 @@ class Journal extends React.Component {
 
     renderDeviceButton = (el) => {
         if (el.state === 'FREE') {
-            return <Button bsStyle="success" onClick={() => this.takeToWork(el)}>Взять в работу</Button>
+            return <Button bsStyle="success" onClick={() => this.takeToWork(el)}>Взять</Button>
         }
 
         if (el.state === 'WAIT' && this.props.userInfo && this.props.userInfo.roles[0] !== 'Administrators') {
@@ -145,7 +146,28 @@ class Journal extends React.Component {
                     </tr>
                 }
 
+            } if(this.state.waitingDevice) {
+            array && userInfo && array.map((el) => {
+                if(el.state === 'WAIT' && this.props.userInfo.roles[0] === 'Administrators') {
+                    myDevice.push(el);
+                }
+            });
+
+            if(myDevice.length !== 0) {
+                return this.renderDevicesTable(myDevice);
             } else {
+                return <tr>
+                    <td colspan="7">
+                        <div className={'journal-table--no-device'}>
+                            <Panel bsStyle="danger">
+                                <Panel.Body>В данный момент нет ниодного устройства на списание</Panel.Body>
+                            </Panel>
+                        </div>
+                    </td>
+                </tr>
+            }
+
+        }else {
                 return this.renderDevicesTable(array);
             }
     };
@@ -180,12 +202,16 @@ class Journal extends React.Component {
       this.setState({myDevice: !this.state.myDevice});
     };
 
+    checkWaitingDevice = () => {
+        this.setState({waitingDevice: !this.state.waitingDevice});
+    };
+
     render() {
         return (<div className={'content-page-wrap'}>
                 <h4 className={'content-title'}>Журнал устройств</h4>
                 <div className={'content-box'}>
                     <Checkbox onClick={this.checkBoxMyDevice}>Девайсы на мне</Checkbox>
-
+                    <Checkbox onClick={this.checkWaitingDevice}>Девайсы на списание</Checkbox>
                     <Table responsive>
                         <thead>
                         <tr>

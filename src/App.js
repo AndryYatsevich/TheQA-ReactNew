@@ -72,7 +72,7 @@ class App extends Component {
                         </Col>
 
                         <Col xsOffset={7} xs={3}>
-                            <Userinfo userInfo={this.props.userInfo} logout={this.logout}/>
+                            <Userinfo userInfo={this.props.userInfo} logout={this.logout} devices={this.props.devices}/>
                         </Col>
                     </Row>
                     <Row>
