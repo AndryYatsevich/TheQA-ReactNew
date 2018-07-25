@@ -84,15 +84,10 @@ class Journal extends React.Component {
 
     };
 
-    changeComment = (e) => {
-        console.log(this.state.comment);
-        this.setState({comment: e.target.value});
-    };
 
-    addComment = (id) => {
-        let comment = {
-            comment: this.state.comment
-        };
+
+    addComment = (id, comment) => {
+
 
         this.props.actionEditDevice(id, comment);
     };
@@ -189,7 +184,7 @@ class Journal extends React.Component {
             <td>{el.state === 'TAKEN' ? <div>{el.testing.user.name}</div> : el.state === 'WAIT' ? <div>{el.testing.user.name}</div> : ''} </td>
             <td>{el.state === 'TAKEN' ?
                 <div>{this.renderDate(el.testing.startTime)}</div> : ''}</td>
-            <td><Comment el={el}
+            <td className={'journal-comment--cell'}><Comment el={el}
                          changeComment={this.changeComment}
                          addComment={this.addComment}
                          deleteComment={this.deleteComment}

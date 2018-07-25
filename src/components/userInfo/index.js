@@ -11,14 +11,26 @@ class userInfo extends React.Component {
             userMenu: false,
             auth: true
         };
+        this.isHover = false;
     }
+
+
+    componentDidMount () {
+        document.body.addEventListener('click', () => {
+            if(!this.isHover) this.setState({userMenu: false});
+        }, false)
+    };
+
+    handlerOver = () => {
+        this.isHover = true
+    };
+
+    handlerBlur = () => {
+        this.isHover = false;
+    };
 
     userMenuHandle = () => {
         this.setState({userMenu: !this.state.userMenu});
-    };
-
-    hideUserMenu = () => {
-        this.setState({userMenu: false});
     };
 
 
@@ -29,9 +41,9 @@ class userInfo extends React.Component {
                     <div className={'user-info--block'}>
                         <ul className={'user-info--list'}>
                             <li className={'user-info--item'}>
-                                    <Bell userInfo={this.props.userInfo} devices={this.props.devices} hideUserMenu={this.hideUserMenu} />
+                                    <Bell userInfo={this.props.userInfo} devices={this.props.devices}/>
                             </li>
-                            <li className={'user-info--item'} onClick={this.userMenuHandle}>
+                            <li className={'user-info--item'} onMouseEnter={this.handlerOver} onMouseLeave={this.handlerBlur}  onClick={this.userMenuHandle}>
                                 <img src={avatar} className={'user-info--avatar'} alt="avatar"/>
                                 {this.props.userInfo ? this.props.userInfo.name : 'Кто ты блеать?!'}
                                 <Glyphicon glyph="menu-down" className={'user-info-menu-down'}/>

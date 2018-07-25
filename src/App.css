@@ -401,6 +401,13 @@ user-info-menu--bell{
   background: 0 0;
   border: 0;
 }
+.bell--menu-title{
+  font-weight: 400;
+  color: #212529;
+  padding: .25rem 1.5rem;
+
+  text-align: center;
+}
 
 .bell--menu--item-icon{
   float: left;
@@ -419,4 +426,30 @@ user-info-menu--bell{
   margin-left: 45px;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+.bell--menu-item:hover {
+  color: #16181b;
+  text-decoration: none;
+  background-color: #f8f9fa;
+  cursor: pointer;
+}
+
+.comment--icon {
+  line-height: 26px;
+  vertical-align: text-top;
+  width: 20px;
+}
+.comment--input{
+  display: inline-block;
+}
+.journal-comment--cell{
+  width: 280px;
+}
+.comment-buttons--plus{
+
+  cursor: pointer;
+}
+.comment-buttons--plus:hover {
+  color: #23b195;
 }

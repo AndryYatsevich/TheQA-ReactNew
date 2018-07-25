@@ -1,20 +1,33 @@
 import React from 'react';
-/*import {Grid, Row, Col} from 'react-flexbox-grid';*/
+import {Link} from 'react-router-dom';
 import {Glyphicon, Row, Col} from 'react-bootstrap';
 
 class History extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            notificationMenu: false
+            notificationMenu: false,
+            isHover: false
         };
+        this.isHover = false;
     }
+    componentDidMount () {
+      document.body.addEventListener('click', () => {
+          if(!this.isHover) this.setState({notificationMenu: false});
+      }, false)
+    };
 
     notificationHandle = () => {
-        this.props.hideUserMenu();
         this.setState({notificationMenu: !this.state.notificationMenu});
     };
 
+    handlerOver = () => {
+      this.isHover = true
+    };
+
+    handlerBlur = () => {
+        this.isHover = false;
+    };
 
     countNotification = (array, userInfo) => {
         let count = 0;
@@ -44,12 +57,13 @@ class History extends React.Component {
             });
         }
 
-     if (waitingDevice === 0) {
-        return <div>В данный момент у вас нет оповещений</div>
+     if (waitingDevice.length === 0) {
+            console.log('d(X_X)b');
+         return <div className={'bell--menu-title'}><h6>В данный момент у вас нет оповещений</h6></div>
      } else {
         return waitingDevice.map((el) => {
              console.log(el);
-                return (<div className={'bell--menu-item'}>
+                return (<Link to={'/'} className={'bell--menu-item'}>
                     <div className={'bell--menu--item-icon'}>
                         <Glyphicon glyph={'time'} className={'device-status-icon success icon-warning'}/>
                     </div>
@@ -59,7 +73,7 @@ class History extends React.Component {
 
                     </p>
 
-                    </div>)
+                    </Link>)
          })
      }
 
@@ -70,13 +84,13 @@ class History extends React.Component {
 
     render() {
         return (
-            <div className={'user-info-bell-wrap bell-wrap'}>
-                <Glyphicon glyph="bell" className={'user-info-bell'} onClick={this.notificationHandle}/>
+            <div className={'user-info-bell-wrap bell-wrap'} onMouseEnter={this.handlerOver} onMouseLeave={this.handlerBlur} onClick={this.notificationHandle}>
+                <Glyphicon glyph="bell" className={'user-info-bell'} />
                 {this.countNotification(this.props.devices, this.props.userInfo)}
 
                 {this.state.notificationMenu ?
                     <div className={'bell-menu'}>
-                        <div className={'bell--menu-item'}>
+                        <div className={'bell--menu-title'}>
                             <h5>Оповещения</h5>
                         </div>
                         {this.listNotification(this.props.devices, this.props.userInfo)}
