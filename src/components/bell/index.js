@@ -11,8 +11,8 @@ class History extends React.Component {
     }
 
     notificationHandle = () => {
+        this.props.hideUserMenu();
         this.setState({notificationMenu: !this.state.notificationMenu});
-        console.log('takoe');
     };
 
 
@@ -32,6 +32,42 @@ class History extends React.Component {
         return count ? <span className={'bell--badge'}>{count}</span> : '';
     };
 
+    listNotification = (array, userInfo) => {
+        let waitingDevice = [];
+        if(array && userInfo) {
+            array.map((el) => {
+                if(el.testing) {
+                    if(el.state === 'WAIT' && userInfo.roles[0] === 'Administrators'){
+                        waitingDevice.push(el);
+                    }
+                }
+            });
+        }
+
+     if (waitingDevice === 0) {
+        return <div>В данный момент у вас нет оповещений</div>
+     } else {
+        return waitingDevice.map((el) => {
+             console.log(el);
+                return (<div className={'bell--menu-item'}>
+                    <div className={'bell--menu--item-icon'}>
+                        <Glyphicon glyph={'time'} className={'device-status-icon success icon-warning'}/>
+                    </div>
+                    <p className={'bell--menu--item-details'}>
+                        <div><h5>{el.name}</h5></div>
+                        <div><h6>{el.testing.user.name}</h6></div>
+
+                    </p>
+
+                    </div>)
+         })
+     }
+
+
+    };
+
+
+
     render() {
         return (
             <div className={'user-info-bell-wrap bell-wrap'}>
@@ -39,20 +75,11 @@ class History extends React.Component {
                 {this.countNotification(this.props.devices, this.props.userInfo)}
 
                 {this.state.notificationMenu ?
-                    <div className={'user-info-menu'}>
-                        <div className={'user-info-menu-item'} onClick={this.props.logout}>
-                            <Glyphicon glyph="off" className={'user-info--menu-icon'}/>
-                            <span>Выйти</span>
+                    <div className={'bell-menu'}>
+                        <div className={'bell--menu-item'}>
+                            <h5>Оповещения</h5>
                         </div>
-                        <div className={'user-info-menu-item'} onClick={this.props.logout}>
-                            <Glyphicon glyph="off" className={'user-info--menu-icon'}/>
-                            <span>Выйти</span>
-                        </div>
-                        <div className={'user-info-menu-item'} onClick={this.props.logout}>
-                            <Glyphicon glyph="off" className={'user-info--menu-icon'}/>
-                            <span>Выйти</span>
-                        </div>
-
+                        {this.listNotification(this.props.devices, this.props.userInfo)}
                     </div>
                     : ''}
             </div>

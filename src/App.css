@@ -102,11 +102,6 @@ body {
   cursor: pointer;
 }
 
-.user-info-bell {
-  font-size: 20px;
-  padding: 0 15px;
-  vertical-align: middle;
-}
 
 .user-info--avatar{
   height: 32px;
@@ -121,6 +116,7 @@ body {
   padding: 0 10px;
 }
 
+
 .user-info-bell-wrap{
   padding: 0;
   line-height: 70px;
@@ -128,6 +124,14 @@ body {
   display: inline;
 }
 
+.user-info-bell {
+  font-size: 20px;
+  padding: 0 15px;
+  vertical-align: middle;
+}
+user-info-menu--bell{
+  line-height: 20px;
+}
 .user-info-menu{
   position: absolute;
   will-change: transform;
@@ -311,7 +315,8 @@ body {
 
 .device-status-icon{
   font-size: 28px;
-  justify-content: center
+  justify-content: center;
+  vertical-align: text-top;
 }
 .device-status-icon--wrap{
   text-align:  center;
@@ -357,4 +362,61 @@ body {
 
 .bell-wrap{
   position: relative;
+}
+
+.bell-menu {
+  position: absolute;
+  transform: translate3d(-210px, 70px, 0px);
+  top: -30px;
+  left: 150px;
+  will-change: transform;
+  padding: 4px 0;
+  font-size: 14px;
+  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.05);
+  z-index: 1000;
+  float: left;
+  min-width: 10rem;
+  margin: .125rem 0 0;
+  color: #212529;
+  text-align: left;
+  list-style: none;
+  background-color: #fff;
+  background-clip: padding-box;
+  border: 1px solid rgba(0,0,0,.15);
+  border-radius: .25rem;
+  width: 200px;
+  line-height: 30px;
+}
+
+
+.bell--menu-item {
+  display: block;
+  width: 100%;
+  padding: .25rem 1.5rem;
+  clear: both;
+  font-weight: 400;
+  color: #212529;
+  text-align: inherit;
+  white-space: nowrap;
+  background: 0 0;
+  border: 0;
+}
+
+.bell--menu--item-icon{
+  float: left;
+  height: 36px;
+  width: 36px;
+  line-height: 44px;
+  text-align: center;
+  margin-right: 10px;
+  border-radius: 50%;
+  color: #ffffff;
+}
+
+.bell--menu--item-details {
+  margin-bottom: 0;
+  overflow: hidden;
+  margin-left: 45px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }

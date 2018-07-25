@@ -17,6 +17,10 @@ class userInfo extends React.Component {
         this.setState({userMenu: !this.state.userMenu});
     };
 
+    hideUserMenu = () => {
+        this.setState({userMenu: false});
+    };
+
 
     render() {
         return (
@@ -25,7 +29,7 @@ class userInfo extends React.Component {
                     <div className={'user-info--block'}>
                         <ul className={'user-info--list'}>
                             <li className={'user-info--item'}>
-                                    <Bell userInfo={this.props.userInfo} devices={this.props.devices}/>
+                                    <Bell userInfo={this.props.userInfo} devices={this.props.devices} hideUserMenu={this.hideUserMenu} />
                             </li>
                             <li className={'user-info--item'} onClick={this.userMenuHandle}>
                                 <img src={avatar} className={'user-info--avatar'} alt="avatar"/>
