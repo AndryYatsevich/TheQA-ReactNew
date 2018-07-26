@@ -69,14 +69,14 @@ class Comment extends React.Component {
     renderComment () {
         if(this.props.el.state === 'TAKEN' && this.props.userInfo && this.props.el.testing.user.id === this.props.userInfo.id ) {
             return ([
-                this.props.el.comment,  <div className={'comment-buttons'}>
+                <div className={'comment--text-wrap'}><p className={'comment--text'}>{this.props.el.comment}</p></div>,  <div className={'comment-buttons'}>
                         <Glyphicon glyph={'edit'} className={'side-menu--icon'} onClick={this.editingComment}/>
                         <Glyphicon glyph={'trash'} className={'side-menu--icon'} onClick={() => this.handleShowDeleteModal()}/>
 
                 </div>
             ]);
         } else {
-            return this.props.el.comment;
+            return (<div className={'comment--text-wrap'}><p className={'comment--text'}>{this.props.el.comment}</p></div>);
         }
     }
 
@@ -101,7 +101,7 @@ class Comment extends React.Component {
                    }
                 <Modal show={this.state.showDeleteModal} onHide={this.handleCloseDeleteModal}>
                     <Modal.Header>
-                        <Modal.Title>{this.props.deleteEntity}</Modal.Title>
+                        <Modal.Title>Удаления комментария</Modal.Title>
                     </Modal.Header>
 
                     <Modal.Body>Вы действительно хотите удалить комментарий?</Modal.Body>

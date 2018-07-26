@@ -227,7 +227,7 @@ user-info-menu--bell{
   line-height: 17px;
   margin: 0 10px 0 3px;
   text-align: center;
-  vertical-align: middle;
+  vertical-align: text-top;
   width: 20px;
 }
 .side-menu--badge {
@@ -452,4 +452,24 @@ user-info-menu--bell{
 }
 .comment-buttons--plus:hover {
   color: #23b195;
+}
+
+.journal-btn--size {
+  width: 80px;
+}
+
+.comment--text-wrap {
+
+  display: inline-block;
+  width: 65%;
+  overflow: hidden;
+
+  max-height: 25px;
+}
+
+.comment--text {
+  width: 170px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
