@@ -109,13 +109,19 @@ class Journal extends React.Component {
 
     renderDate = (date) => {
         let parseDate = new Date(date);
-        let takoe = parseDate.getDate() + '.' +
+        let minute;
+        if(parseDate.getMinutes() < 10) {
+            minute = '0' + parseDate.getMinutes();
+        } else {
+            minute = parseDate.getMinutes();
+        }
+        let currentDate = parseDate.getDate() + '.' +
             (parseDate.getMonth() + 1) + '.' +
             parseDate.getFullYear() +  ' '
         + parseDate.getHours() + ':'
-        + parseDate.getMinutes();
+        + minute;
         let arr = [];
-        arr.push(takoe.toString());
+        arr.push(currentDate.toString());
         return arr;
     };
     checkCheckBox = (array, userInfo) => {
@@ -184,11 +190,11 @@ class Journal extends React.Component {
             <td>{el.state === 'TAKEN' ? <div>{el.testing.user.name}</div> : el.state === 'WAIT' ? <div>{el.testing.user.name}</div> : ''} </td>
             <td>{el.state === 'TAKEN' ?
                 <div>{this.renderDate(el.testing.startTime)}</div> : ''}</td>
-            <td className={'journal-comment--cell'}><Comment el={el}
-                         changeComment={this.changeComment}
-                         addComment={this.addComment}
-                         deleteComment={this.deleteComment}
-                         userInfo={this.props.userInfo}/></td>
+            {/*<td className={'journal-comment--cell'}><Comment el={el}*/}
+                         {/*changeComment={this.changeComment}*/}
+                         {/*addComment={this.addComment}*/}
+                         {/*deleteComment={this.deleteComment}*/}
+                         {/*userInfo={this.props.userInfo}/></td>*/}
             <td>{this.renderDeviceButton(el)}</td>
         </tr>
     }));
@@ -216,7 +222,6 @@ class Journal extends React.Component {
                             <th className={'journal-table--status-caption'}>Статус</th>
                             <th>Взял в работу</th>
                             <th>Дата/Время</th>
-                            <th>Комментарий</th>
                         </tr>
                         </thead>
                         <tbody>

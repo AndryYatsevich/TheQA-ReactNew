@@ -31,12 +31,6 @@ class App extends Component {
         this.setState({auth: !this.state.auth})
     };
 
-
-
-
-
-
-
     render() {
         let menu = [
             {

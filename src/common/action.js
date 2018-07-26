@@ -142,7 +142,7 @@ export const actionEditDevice = (id, data) => (dispatch) => {
 
 export const actionAddNewEntity = (data, path, getInfo) => (dispatch) => {
     console.log(JSON.stringify(data));
-    fetch('http://localhost:8080/app/rest/v2/entities/' + path, {
+    fetch('http://localhost:8080/app/rest' + path, {
         method: "POST",
         headers: {
             "Authorization": "Bearer " + localStorage.getItem('token'),
@@ -177,7 +177,16 @@ export const actionAddNewEntity = (data, path, getInfo) => (dispatch) => {
                             type: commonAction.GET_ALL_DEVICE,
                             payload: devices
                         });
-                    })
+                    });
+            case 'user':
+                return services.getAllDevice()
+                    .then((devices) => {
+                        console.log(devices);
+                        dispatch({
+                            type: commonAction.GET_ALL_DEVICE,
+                            payload: devices
+                        });
+                    });
             default:
                 return false;
         }
@@ -186,7 +195,7 @@ export const actionAddNewEntity = (data, path, getInfo) => (dispatch) => {
 };
 
 export const actionDeleteEntity = (path, id, getInfo) => (dispatch) => {
-    fetch('http://localhost:8080/app/rest/v2/entities/'+ path + '/' + id, {
+    fetch('http://localhost:8080/app/rest'+ path + '/' + id, {
         method: "DELETE",
         headers: {
             "Authorization": "Bearer " + localStorage.getItem('token'),
@@ -220,7 +229,16 @@ export const actionDeleteEntity = (path, id, getInfo) => (dispatch) => {
                             type: commonAction.GET_ALL_DEVICE,
                             payload: devices
                         });
-                    })
+                    });
+            case 'user':
+                return services.getAllDevice()
+                    .then((devices) => {
+                        console.log(devices);
+                        dispatch({
+                            type: commonAction.GET_ALL_DEVICE,
+                            payload: devices
+                        });
+                    });
             default:
                 return false;
         }
@@ -228,7 +246,7 @@ export const actionDeleteEntity = (path, id, getInfo) => (dispatch) => {
 };
 
 export const actionEditEntity = (data, path, id, getInfo) => (dispatch) => {
-    fetch('http://localhost:8080/app/rest/v2/entities/'+ path + '/' + id, {
+    fetch('http://localhost:8080/app/rest'+ path + '/' + id, {
         method: "PUT",
         headers: {
             "Authorization": "Bearer " + localStorage.getItem('token'),
@@ -263,7 +281,16 @@ export const actionEditEntity = (data, path, id, getInfo) => (dispatch) => {
                             type: commonAction.GET_ALL_DEVICE,
                             payload: devices
                         });
-                    })
+                    });
+            case 'user':
+                return services.getAllDevice()
+                    .then((devices) => {
+                        console.log(devices);
+                        dispatch({
+                            type: commonAction.GET_ALL_DEVICE,
+                            payload: devices
+                        });
+                    });
             default:
                 return false;
         }

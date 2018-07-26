@@ -58,29 +58,24 @@ class History extends React.Component {
         }
 
      if (waitingDevice.length === 0) {
-            console.log('d(X_X)b');
          return <div className={'bell--menu-title'}><h6>В данный момент у вас нет оповещений</h6></div>
      } else {
         return waitingDevice.map((el) => {
              console.log(el);
-                return (<Link to={'/'} className={'bell--menu-item'}>
-                    <div className={'bell--menu--item-icon'}>
-                        <Glyphicon glyph={'time'} className={'device-status-icon success icon-warning'}/>
-                    </div>
-                    <p className={'bell--menu--item-details'}>
-                        <div><h5>{el.name}</h5></div>
-                        <div><h6>{el.testing.user.name}</h6></div>
-
-                    </p>
-
-                    </Link>)
+                return (
+                    <Link to={'/'} className={'bell--menu-item'}>
+                        <div className={'bell--menu--item-icon'}>
+                            <Glyphicon glyph={'time'} className={'device-status-icon success icon-warning'}/>
+                        </div>
+                        <p className={'bell--menu--item-details'}>
+                            <div><h5>{el.name}</h5></div>
+                            <div><h6>{el.testing.user.name}</h6></div>
+                        </p>
+                    </Link>
+                )
          })
      }
-
-
     };
-
-
 
     render() {
         return (

@@ -108,6 +108,10 @@ class SettingsContent extends React.Component {
             };
             entity['state'] = 'FREE';
         }
+        if(this.props.entityType === 'user') {
+
+        }
+
         this.props.addEntityAction(entity, this.props.path, this.props.entityType);
         for (let i = 0; i < this.props.entityField.length; i++) {
             state[this.props.entityField[i]] = null;
@@ -127,7 +131,6 @@ class SettingsContent extends React.Component {
                 if (key === this.props.entityField[i] && key !== 'deviceOs') {
                     entity[this.props.entityField[i]] = this.state[this.props.entityField[i]]
                 }
-
             }
         }
 
@@ -137,7 +140,6 @@ class SettingsContent extends React.Component {
                 id: this.state.deviceOs,
             };
             entity['state'] = 'FREE';
-            console.log(entity,'0000000000000000000000');
         }
         console.log(entity);
 

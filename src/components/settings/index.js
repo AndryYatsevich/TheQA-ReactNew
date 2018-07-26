@@ -30,6 +30,12 @@ class Settings extends React.Component {
                                 addEntity={'Добавить нового пользователя'}
                                 editEntity={'Редактирование пользователя'}
                                 deleteEntity={'Удаление пользователя'}
+                                addEntityAction={this.props.actionAddNewEntity}
+                                deleteEntityAction={this.props.actionDeleteEntity}
+                                editEntityAction={this.props.actionEditEntity}
+                                entityField = {['name', 'password', 'email', 'role']}
+                                path={'/api/addNewUser'}
+                                entityType={'user'}
 
                                 modalField={[
                                     {
@@ -56,7 +62,7 @@ class Settings extends React.Component {
                                         type: 'options',
                                         title: 'Выберите роль',
                                         options: this.props.roles,
-                                        handler: 'roleValue'
+                                        handler: 'role'
                                     }
                                 ]}
                             />
@@ -75,7 +81,7 @@ class Settings extends React.Component {
                                 deleteEntityAction={this.props.actionDeleteEntity}
                                 editEntityAction={this.props.actionEditEntity}
                                 entityField = {['name', 'description', 'screenResolution', 'deviceOs']}
-                                path={'testersjournal$Device'}
+                                path={'/v2/entities/testersjournal$Device'}
                                 entityType={'device'}
                                 modalField={[
                                     {
@@ -117,7 +123,7 @@ class Settings extends React.Component {
                                 deleteEntityAction={this.props.actionDeleteEntity}
                                 editEntityAction={this.props.actionEditEntity}
                                 entityField = {['name']}
-                                path={'sec$Role'}
+                                path={'/v2/entities/sec$Role'}
                                 entityType={'role'}
                                 modalField={[
                                     {
@@ -142,7 +148,7 @@ class Settings extends React.Component {
                                 deleteEntityAction={this.props.actionDeleteEntity}
                                 editEntityAction={this.props.actionEditEntity}
                                 entityField = {['name']}
-                                path={'testersjournal$OperationSystem'}
+                                path={'/v2/entities/testersjournal$OperationSystem'}
                                 entityType={'os'}
                                 modalField={[
                                     {
