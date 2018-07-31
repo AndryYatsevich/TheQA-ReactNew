@@ -109,8 +109,11 @@ class SettingsContent extends React.Component {
             entity['state'] = 'FREE';
         }
         if(this.props.entityType === 'user') {
+entity['role'] = {
+    id: this.state.role
+}
 
-        }
+        };
 
         this.props.addEntityAction(entity, this.props.path, this.props.entityType);
         for (let i = 0; i < this.props.entityField.length; i++) {

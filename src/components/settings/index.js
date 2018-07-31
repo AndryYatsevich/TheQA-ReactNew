@@ -1,10 +1,16 @@
 import React from 'react';
 import {Tabs, Tab} from 'react-bootstrap';
 import {connect} from 'react-redux';
-import {getDeviceOS, getAllUsers} from "../settings/action";
+import {getDeviceOS} from "../settings/action";
 import SettingDevices from '../settings-devices';
 import SettingsContent from '../settings-content';
-import {actionGetAllOS, actionGetAllRoles, actionAddNewEntity, actionDeleteEntity, actionEditEntity, actionGetAllDevice} from '../../common/action';
+import {actionGetAllOS,
+    actionGetAllRoles,
+    actionAddNewEntity,
+    actionDeleteEntity,
+    actionEditEntity,
+    actionGetAllDevice,
+    actionGetAllUser} from '../../common/action';
 
 class Settings extends React.Component {
 
@@ -24,7 +30,7 @@ class Settings extends React.Component {
                             <SettingsContent
                                 buttonTitle={'Добавить пользователя'}
                                 tableColumn={['Логин', 'ФИО', 'Роль', 'email', '']}
-                                getRequiredData={this.props.getAllUsers}
+                                getRequiredData={this.props.actionGetAllUser}
                                 tableContent={this.props.users}
                                 model={['login', 'name', 'roles','','btn']}
                                 addEntity={'Добавить нового пользователя'}
@@ -33,7 +39,7 @@ class Settings extends React.Component {
                                 addEntityAction={this.props.actionAddNewEntity}
                                 deleteEntityAction={this.props.actionDeleteEntity}
                                 editEntityAction={this.props.actionEditEntity}
-                                entityField = {['name', 'password', 'email', 'role']}
+                                entityField = {['login', 'name', 'password', 'email', 'role']}
                                 path={'/api/addNewUser'}
                                 entityType={'user'}
 
@@ -51,7 +57,7 @@ class Settings extends React.Component {
                                     {
                                         title: 'ФИО',
                                         placeholder: 'Введите ФИО',
-                                        handler: 'fio'
+                                        handler: 'name'
                                     },
                                     {
                                         title: 'Email',
@@ -173,7 +179,7 @@ const mapStateToProps = (state) => ({
     userInfo: state.common.userInfo,
     devices: state.common.devices,
     roles: state.common.roles,
-    users: state.settings.users
+    users: state.common.users
 });
 
 /*const mapDispatchToProps = (dispatch) => ({
@@ -184,7 +190,7 @@ export default connect(mapStateToProps, {
     actionGetAllDevice,
     getDeviceOS,
     actionGetAllOS,
-    getAllUsers,
+    actionGetAllUser,
     actionGetAllRoles,
     actionAddNewEntity,
     actionDeleteEntity,

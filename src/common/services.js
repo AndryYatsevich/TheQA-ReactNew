@@ -32,6 +32,21 @@ export default {
         });
     },
 
+    getAllUser: function () {
+        return fetch('http://localhost:8080/app/rest/api/getUsersWithRoles', {
+            method: "GET",
+            headers: {
+                "Authorization": "Bearer " + localStorage.getItem('token'),
+                "Content-Type": "application/x-www-form-urlencoded"
+            }
+        }).then((response) => {
+            if (response.status !== 200) localStorage.removeItem('token');
+            return response.json();
+        }).catch((err) => {
+            console.log('An error occurred!', err);
+        });
+    },
+
     getAllDevice: function () {
         return fetch('http://localhost:8080/app/rest/v2/entities/testersjournal$Device?view=device-with-all', {
             method: "GET",

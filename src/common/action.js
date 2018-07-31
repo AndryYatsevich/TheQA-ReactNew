@@ -28,6 +28,16 @@ export const actionGetUserInfo = () => (dispatch) => {
         })
 };
 
+export const actionGetAllUser = () => (dispatch) => {
+    services.getAllUser()
+        .then((users) => {
+            dispatch({
+                type: commonAction.GET_ALL_USERS,
+                payload: users
+            });
+        })
+};
+
 export const actionGetAllDevice = () => (dispatch) => {
     services.getAllDevice()
         .then((devices) => {
@@ -179,11 +189,10 @@ export const actionAddNewEntity = (data, path, getInfo) => (dispatch) => {
                         });
                     });
             case 'user':
-                return services.getAllDevice()
+                return services.getAllUser()
                     .then((devices) => {
-                        console.log(devices);
                         dispatch({
-                            type: commonAction.GET_ALL_DEVICE,
+                            type: commonAction.GET_ALL_USERS,
                             payload: devices
                         });
                     });
@@ -231,11 +240,10 @@ export const actionDeleteEntity = (path, id, getInfo) => (dispatch) => {
                         });
                     });
             case 'user':
-                return services.getAllDevice()
+                return services.getAllUser()
                     .then((devices) => {
-                        console.log(devices);
                         dispatch({
-                            type: commonAction.GET_ALL_DEVICE,
+                            type: commonAction.GET_ALL_USERS,
                             payload: devices
                         });
                     });
@@ -276,18 +284,16 @@ export const actionEditEntity = (data, path, id, getInfo) => (dispatch) => {
             case 'device':
                 return services.getAllDevice()
                     .then((devices) => {
-                        console.log(devices);
                         dispatch({
                             type: commonAction.GET_ALL_DEVICE,
                             payload: devices
                         });
                     });
             case 'user':
-                return services.getAllDevice()
+                return services.getAllUser()
                     .then((devices) => {
-                        console.log(devices);
                         dispatch({
-                            type: commonAction.GET_ALL_DEVICE,
+                            type: commonAction.GET_ALL_USERS,
                             payload: devices
                         });
                     });
