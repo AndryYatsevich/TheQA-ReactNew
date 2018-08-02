@@ -53,7 +53,13 @@ class Journal extends React.Component {
         console.log('returnDevice', el);
         let date = new Date();
         let testing = {
-            endTime: date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate() + ' ' + date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds() + '.' + date.getMilliseconds()
+            endTime: date.getFullYear() + '-'
+            + (date.getMonth() + 1) + '-'
+            + date.getDate() + ' '
+            + date.getHours() + ':'
+            + date.getMinutes() + ':'
+            + date.getSeconds() + '.'
+            + date.getMilliseconds()
         };
         this.props.changeStatusToWork(el, testing);
     };

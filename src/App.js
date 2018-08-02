@@ -27,6 +27,7 @@ class App extends Component {
     }
 
     logout = () => {
+        console.log('takoe');
         localStorage.removeItem('token');
         this.setState({auth: !this.state.auth})
     };

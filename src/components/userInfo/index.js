@@ -51,15 +51,11 @@ class userInfo extends React.Component {
                         </ul>
                         {this.state.userMenu ?
                             <div className={'user-info-menu'}>
-                                <div className={'user-info-menu-item'} onClick={this.props.logout}>
-                                    <Glyphicon glyph="off" className={'user-info--menu-icon'}/>
-                                    <span>Выйти</span>
+                                <div className={'user-info-menu-item'}onClick={this.props.logout}>
+                                    <Glyphicon glyph="user" className={'user-info--menu-icon'}/>
+                                    <span>Профиль</span>
                                 </div>
-                                <div className={'user-info-menu-item'} onClick={this.props.logout}>
-                                    <Glyphicon glyph="off" className={'user-info--menu-icon'}/>
-                                    <span>Выйти</span>
-                                </div>
-                                <div className={'user-info-menu-item'} onClick={this.props.logout}>
+                                <div className={'user-info-menu-item'} onMouseEnter={this.handlerOver} onMouseLeave={this.handlerBlur}  onClick={this.props.logout}>
                                     <Glyphicon glyph="off" className={'user-info--menu-icon'}/>
                                     <span>Выйти</span>
                                 </div>

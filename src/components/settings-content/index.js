@@ -1,5 +1,5 @@
 import React from 'react';
-import {Button, Table, Glyphicon, Modal, FormGroup, ControlLabel, FormControl} from 'react-bootstrap';
+import {Button, Table, Glyphicon, Modal, FormGroup, ControlLabel, FormControl, Tooltip, OverlayTrigger} from 'react-bootstrap';
 
 class SettingsContent extends React.Component {
     constructor(props) {
@@ -144,14 +144,23 @@ entity['role'] = {
             };
             entity['state'] = 'FREE';
         }
-        console.log(entity);
+        if (this.props.entityType === 'user') {
+            this.props.editEntityAction(
+                entity,
+                '/v2/entities/sec$User',
+                this.state.editingEntityId,
+                this.props.entityType)
+        } else {
+            this.props.editEntityAction(
+                entity,
+                this.props.path,
+                this.state.editingEntityId,
+                this.props.entityType
+            );
+        }
 
-        this.props.editEntityAction(
-            entity,
-            this.props.path,
-            this.state.editingEntityId,
-            this.props.entityType
-        );
+
+
         for (let i = 0; i < this.props.entityField.length; i++) {
             state[this.props.entityField[i]] = null;
         }
@@ -159,14 +168,38 @@ entity['role'] = {
     };
 
     deleteEntity = () => {
-        this.props.deleteEntityAction(
-            this.props.path,
-            this.state.deletedEntityId,
-            this.props.entityType);
+        if (this.props.entityType === 'user') {
+            this.props.deleteEntityAction(
+                '/v2/entities/sec$User',
+                this.state.deletedEntityId,
+                this.props.entityType);
+        } else {
+            this.props.deleteEntityAction(
+                this.props.path,
+                this.state.deletedEntityId,
+                this.props.entityType);
+        }
+
+
         this.handleCloseDeleteModal();
     };
 
     renderTableCell = (el, model) => {
+        const tooltipEdit = (
+            <Tooltip id="tooltip">
+                Редактировать
+            </Tooltip>
+        );
+        const tooltipDelete = (
+            <Tooltip id="tooltip">
+                Удалить
+            </Tooltip>
+        );
+        const tooltipRefreshPassword =(
+            <Tooltip id="tooltip">
+                Сбросить пароль
+            </Tooltip>
+            );
 
         let tableRow = [];
         for (let i = 0; i < model.length; i++) {
@@ -189,17 +222,46 @@ entity['role'] = {
         if (model[model.length - 1] === 'btn') {
             tableRow.push(<td>
                 <div className={'settings-btn'}>
-                    <Glyphicon glyph={'edit'}
+                    <OverlayTrigger placement="top" overlay={tooltipEdit}>
+                        <Glyphicon glyph={'edit'}
                                className={'settings--icon '}
                                onClick={() => this.handleShowEditModal(el)}/>
-
-                    <Glyphicon glyph={'trash'}
+                    </OverlayTrigger>
+                    <OverlayTrigger placement="top" overlay={tooltipDelete}>
+                        <Glyphicon glyph={'trash'}
                                className={'settings--icon'}
                                onClick={() => this.handleShowDeleteModal(el)}/>
+                    </OverlayTrigger>
+                    {this.props.entityType === 'user' ?
+                        <OverlayTrigger placement="top" overlay={tooltipRefreshPassword}>
+                            <Glyphicon glyph={'refresh'}
+                                   className={'settings--icon'}
+                                   onClick={() => this.refreshUserPassword(el)}/>
+                    </OverlayTrigger>: ''}
                 </div>
             </td>);
+
         }
         return tableRow;
+    };
+
+    refreshUserPassword = (el) => {
+        console.log(el);
+        let data = {
+            newPassword: 'pass',
+            userId: el.id
+        };
+
+        fetch('http://localhost:8080/app/rest/api/changePassword', {
+            method: "POST",
+            headers: {
+                "Authorization": "Bearer " + localStorage.getItem('token'),
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(data)
+        }).then((response) => {
+            return response.text();
+    })
     };
 
     tableContentRender = (array, model) => (array && array.map((el, key) => {
@@ -219,8 +281,10 @@ entity['role'] = {
                 <FormControl
                     componentClass="select"
                     placeholder="select"
+                    label="takoe"
                     onChange={(e) => this.modalOptionHandler(e, el)}>
-                    <option disabled>Выберите ОС</option>
+
+                    <option value="" />
                     {this.renderOptionField(el.options)}
                 </FormControl>
             </FormGroup>
