@@ -32,7 +32,6 @@ class Journal extends React.Component {
                 id: this.props.userInfo.id,
             },
             device: {
-
                 _entityName: "testersjournal$Device",
                 id: el.id
             },
@@ -44,13 +43,10 @@ class Journal extends React.Component {
             + date.getSeconds() + '.'
             + date.getMilliseconds()
         };
-        console.log('testing: ', testing);
-
         this.props.createNewTesting(testing, el.id);
     };
 
     returnDevice = (el) => {
-        console.log('returnDevice', el);
         let date = new Date();
         let testing = {
             endTime: date.getFullYear() + '-'

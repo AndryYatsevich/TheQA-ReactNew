@@ -122,7 +122,7 @@ entity['role'] = {
         this.setState(state);
     };
 
-    acceptEditDevice = () => {
+    acceptEditEntity = () => {
         let entity = {};
         let state ={
             showAddModal: false,
@@ -200,7 +200,16 @@ entity['role'] = {
                 Сбросить пароль
             </Tooltip>
             );
-
+        const tooltipDeleteComment = (
+            <Tooltip id="tooltip">
+                Удалить комментарий
+            </Tooltip>
+            );
+        const tooltipRefreshStatus = (
+            <Tooltip id="tooltip">
+                Сбрость статус
+            </Tooltip>
+        );
         let tableRow = [];
         for (let i = 0; i < model.length; i++) {
         for (let key in el) {
@@ -238,6 +247,30 @@ entity['role'] = {
                                    className={'settings--icon'}
                                    onClick={() => this.refreshUserPassword(el)}/>
                     </OverlayTrigger>: ''}
+                    {this.props.entityType === 'device' ?
+                        <OverlayTrigger placement="top" overlay={tooltipDeleteComment}>
+                            <Glyphicon glyph={'remove'}
+                                       className={'settings--icon'}
+                                       onClick={() => this.props.editEntityAction(
+                                           {
+                                               comment: null
+                                           },
+                                           '/v2/entities/testersjournal$Device',
+                                           el.id,
+                                           this.props.entityType)}/>
+                        </OverlayTrigger>: ''}
+                    {this.props.entityType === 'device' ?
+                        <OverlayTrigger placement="top" overlay={tooltipRefreshStatus}>
+                            <Glyphicon glyph={'refresh'}
+                                       className={'settings--icon'}
+                                       onClick={() => this.props.editEntityAction(
+                                           {
+                                               comment: null
+                                           },
+                                           '/v2/entities/testersjournal$Device',
+                                           el.id,
+                                           this.props.entityType)}/>
+                        </OverlayTrigger>: ''}
                 </div>
             </td>);
 
@@ -339,7 +372,7 @@ entity['role'] = {
                     <Modal.Footer>
                         <Button onClick={this.handleClose}>Закрыть</Button>
                         {this.state.editingEntity ?
-                            <Button bsStyle="success" onClick={this.acceptEditDevice}>Сохранить изменения</Button> :
+                            <Button bsStyle="success" onClick={this.acceptEditEntity}>Сохранить изменения</Button> :
                             <Button bsStyle="success" onClick={this.addEntity}>Добавить</Button>}
                     </Modal.Footer>
                 </Modal>
