@@ -1,33 +1,50 @@
 import React from 'react';
-import {Button, Glyphicon, FormControl, Modal} from 'react-bootstrap';
+import {Button, Glyphicon, FormControl, Modal, OverlayTrigger, Tooltip} from 'react-bootstrap';
 
 class Comment extends React.Component {
     constructor (props) {
         super(props);
-        this.handleCloseDeleteModal = this.handleCloseDeleteModal.bind(this);
+        this.handleCloseEditModal = this.handleCloseEditModal.bind(this);
+        this.handleCloseCommentModal = this.handleCloseCommentModal.bind(this);
         this.state = {
             editingComment: false,
-            showDeleteModal: false,
+            showEditModal: false,
+            showCommentModal: false
         }
     }
 
 
-    handleShowDeleteModal() {
+    handleShowEditModal() {
         this.setState({
-            showDeleteModal: true,
+            showEditModal: true,
+        });
+    }
+    handleShowCommentModal() {
+        this.setState({
+            showCommentModal: true,
         });
     }
 
-    handleCloseDeleteModal() {
-        this.setState({showDeleteModal: false});
+    handleCloseEditModal() {
+        this.setState({
+            showEditModal: false,
+            editingComment: false,
+        });
+    }
+    handleCloseCommentModal() {
+        this.setState({
+            showCommentModal: false
+        });
     }
 
     editingComment = () => {
-
-      this.setState({editingComment: true})
+        this.handleShowEditModal();
+        this.setState({
+            editingComment: true
+        })
     };
     cancelEditingComment = () => {
-
+        this.handleCloseEditModal();
         this.setState({editingComment: false})
     };
     deleteComment = () => {
@@ -52,40 +69,75 @@ class Comment extends React.Component {
 
 
     renderEdit () {
-        return ([
-            <div className={'comment--input'}><FormControl
-                type="text"
-                placeholder="Введите комментарий"
-                onChange={this.changeComment}
-                defaultValue={this.props.el.comment}
-            /></div>, <div className={'comment-buttons'}>
-                <Glyphicon glyph={'ok'} className={'side-menu--icon comment--icon'} onClick={this.acceptEditingComment}/>
-                <Glyphicon glyph={'remove'} className={'side-menu--icon comment--icon'} onClick={this.cancelEditingComment}/>
-            </div>
+        return (
+            <Modal show={this.state.showEditModal} onHide={this.handleCloseEditModal}>
+                <Modal.Header>
+                    <Modal.Title>Редактирование комментария</Modal.Title>
+                </Modal.Header>
 
-        ]);
+                <Modal.Body><FormControl
+                    type="text"
+                    placeholder="Введите комментарий"
+                    onChange={this.changeComment}
+                    defaultValue={this.props.el.comment}
+                /></Modal.Body>
+
+                <Modal.Footer>
+                    {this.props.el.comment ?
+                    <Button bsStyle={'warning'} onClick={this.acceptEditingComment}>Сохранить</Button> :
+                        <Button bsStyle={'warning'} onClick={this.acceptEditingComment}>Добавить</Button>}
+                    {this.props.el.comment ?
+                        <span>
+                            <Button bsStyle="danger" className={'btn-delete-comment'} onClick={this.deleteComment}>Удалить</Button>
+                            <Button bsStyle="default" onClick={this.cancelEditingComment}>Отмена</Button>
+                        </span>:
+                        <Button bsStyle="default" onClick={this.cancelEditingComment}>Отмена</Button>}
+                </Modal.Footer>
+            </Modal>
+        );
     }
 
     renderComment () {
+        const editComment = (
+            <Tooltip id="tooltip">
+               Редактировать комментарий
+            </Tooltip>
+        );
+        const lookComment = (
+            <Tooltip id="tooltip">
+                Посмотреть комментарий
+            </Tooltip>
+        );
         if(this.props.el.state === 'TAKEN' && this.props.userInfo && this.props.el.testing.user.id === this.props.userInfo.id ) {
-            return ([
-                <div className={'comment--text-wrap'}><p className={'comment--text'}>{this.props.el.comment}</p></div>,  <div className={'comment-buttons'}>
-                        <Glyphicon glyph={'edit'} className={'side-menu--icon'} onClick={this.editingComment}/>
-                        <Glyphicon glyph={'trash'} className={'side-menu--icon'} onClick={() => this.handleShowDeleteModal()}/>
-
-                </div>
-            ]);
+            return (
+                <div className={'comment-buttons--plus'}>
+                    <OverlayTrigger placement="top" overlay={editComment}>
+                        <Glyphicon glyph={'pencil'}  onClick={ () => this.editingComment(this.props.el)}/>
+                    </OverlayTrigger>
+                </div>);
         } else {
-            return (<div className={'comment--text-wrap'}><p className={'comment--text'}>{this.props.el.comment}</p></div>);
+            return (<OverlayTrigger placement="top" overlay={lookComment}>
+                        <span className={'journal-comment--badge'} onClick={() => this.handleShowCommentModal(this.props.el)}>
+                            <Glyphicon glyph={'pushpin'}  />
+                        </span>
+            </OverlayTrigger>);
         }
     }
 
     renderAdd () {
+        const addComment = (
+        <Tooltip id="tooltip">
+            Добавить комментарий
+        </Tooltip>
+        );
+
         if(this.props.el.state === 'TAKEN' && this.props.userInfo && this.props.el.testing.user.id === this.props.userInfo.id )
         {
             return (
                 <div className={'comment-buttons--plus'}>
-                    <Glyphicon glyph={'plus'} className={'side-menu--icon'} onClick={ () => this.editingComment(this.props.el)}/>
+                    <OverlayTrigger placement="top" overlay={addComment}>
+                         <Glyphicon glyph={'plus'}  onClick={ () => this.editingComment(this.props.el)}/>
+                    </OverlayTrigger>
                 </div>
 
             )
@@ -99,21 +151,22 @@ class Comment extends React.Component {
                         this.renderEdit():
                         this.renderAdd()
                    }
-                <Modal show={this.state.showDeleteModal} onHide={this.handleCloseDeleteModal}>
-                    <Modal.Header>
-                        <Modal.Title>Удаления комментария</Modal.Title>
-                    </Modal.Header>
+                {this.state.showCommentModal ?
+                    <Modal show={this.state.showCommentModal} onHide={this.handleCloseCommentModal}>
+                        <Modal.Header>
+                            <Modal.Title>Комментарий</Modal.Title>
+                        </Modal.Header>
 
-                    <Modal.Body>Вы действительно хотите удалить комментарий?</Modal.Body>
+                        <Modal.Body>
+                            {this.props.el.comment}
+                        </Modal.Body>
 
-                    <Modal.Footer>
-                        <Button bsStyle={'warning'}
-                                onClick={this.deleteComment}>
-                            Удалить
-                        </Button>
-                        <Button bsStyle="default" onClick={this.handleCloseDeleteModal}>Отмена</Button>
-                    </Modal.Footer>
-                </Modal>
+                        <Modal.Footer>
+                            <Button bsStyle="default" onClick={this.handleCloseCommentModal}>Закрыть</Button>
+                        </Modal.Footer>
+                    </Modal> : ''
+                }
+
             </div>
         )
     }

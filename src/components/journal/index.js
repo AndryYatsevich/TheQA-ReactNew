@@ -177,7 +177,11 @@ class Journal extends React.Component {
 
     renderDevicesTable = (array) => (array && array.sort(this.sortArray).map((el) => {
         return <tr key={el.id} className={'journal--table'}>
-            <td>{el.name}</td>
+            <td className={'journal-device--name-cell'}>{el.name}<Comment el={el}
+                                  changeComment={this.changeComment}
+                                  addComment={this.addComment}
+                                  deleteComment={this.deleteComment}
+                                  userInfo={this.props.userInfo}/></td>
             <td>{el.deviceOs.name} {el.description}</td>
             <td>{el.screenResolution}</td>
             <td>{el.state === 'FREE' ? <div className={'device-status-icon--wrap'}><Glyphicon glyph={'ok-circle'}
@@ -192,11 +196,7 @@ class Journal extends React.Component {
             <td>{el.state === 'TAKEN' ? <div>{el.testing.user.name}</div> : el.state === 'WAIT' ? <div>{el.testing.user.name}</div> : ''} </td>
             <td>{el.state === 'TAKEN' ?
                 <div>{this.renderDate(el.testing.startTime)}</div> : ''}</td>
-            {/*<td className={'journal-comment--cell'}><Comment el={el}*/}
-                         {/*changeComment={this.changeComment}*/}
-                         {/*addComment={this.addComment}*/}
-                         {/*deleteComment={this.deleteComment}*/}
-                         {/*userInfo={this.props.userInfo}/></td>*/}
+            {/*<td className={'journal-comment--cell'}></td>*/}
             <td>{this.renderDeviceButton(el)}</td>
         </tr>
     }));
@@ -215,7 +215,7 @@ class Journal extends React.Component {
                 <div className={'content-box'}>
                     <Checkbox onClick={this.checkBoxMyDevice}>Девайсы на мне</Checkbox>
                     <Checkbox onClick={this.checkWaitingDevice}>Девайсы на списание</Checkbox>
-                    <Table responsive>
+                    <Table>
                         <thead>
                         <tr>
                             <th>Устройство</th>

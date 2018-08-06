@@ -76,10 +76,10 @@ class Settings extends React.Component {
                         <Tab eventKey={2} title="Девайсы">
                             <SettingsContent
                                 buttonTitle={'Добавить девайс'}
-                                tableColumn={['Устройство', 'Версия ОС', 'Разрешение экрана', 'Комментарий','']}
+                                tableColumn={['Устройство', 'Версия ОС', 'Разрешение экрана', '']}
                                 getRequiredData={this.props.actionGetAllDevice}
                                 tableContent={this.props.devices}
-                                model={['name',{deviceOs: 'name'}, 'screenResolution', 'comment',  'btn']}
+                                model={['name',{deviceOs: 'name'}, 'screenResolution',  'btn']}
                                 addEntity={'Добавить девайс'}
                                 editEntity={'Редактирование девайса'}
                                 deleteEntity={'Удаление девайса'}

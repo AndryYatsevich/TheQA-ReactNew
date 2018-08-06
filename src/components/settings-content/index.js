@@ -202,7 +202,7 @@ entity['role'] = {
             );
         const tooltipDeleteComment = (
             <Tooltip id="tooltip">
-                Удалить комментарий
+                Комментарий
             </Tooltip>
             );
         const tooltipRefreshStatus = (
@@ -224,13 +224,22 @@ entity['role'] = {
                 }
             }
         }
-        if(!el.comment) {
-            tableRow.push(<td></td>);
-        }
 
         if (model[model.length - 1] === 'btn') {
             tableRow.push(<td>
                 <div className={'settings-btn'}>
+                    {this.props.entityType === 'device' && el.comment ?
+                        <OverlayTrigger placement="top" overlay={tooltipDeleteComment}>
+                            <Glyphicon glyph={'tag'}
+                                       className={'settings--icon'}
+                                       onClick={() => this.props.editEntityAction(
+                                           {
+                                               comment: null
+                                           },
+                                           '/v2/entities/testersjournal$Device',
+                                           el.id,
+                                           this.props.entityType)}/>
+                        </OverlayTrigger>: ''}
                     <OverlayTrigger placement="top" overlay={tooltipEdit}>
                         <Glyphicon glyph={'edit'}
                                className={'settings--icon '}
@@ -248,18 +257,6 @@ entity['role'] = {
                                    onClick={() => this.refreshUserPassword(el)}/>
                     </OverlayTrigger>: ''}
                     {this.props.entityType === 'device' ?
-                        <OverlayTrigger placement="top" overlay={tooltipDeleteComment}>
-                            <Glyphicon glyph={'remove'}
-                                       className={'settings--icon'}
-                                       onClick={() => this.props.editEntityAction(
-                                           {
-                                               comment: null
-                                           },
-                                           '/v2/entities/testersjournal$Device',
-                                           el.id,
-                                           this.props.entityType)}/>
-                        </OverlayTrigger>: ''}
-                    {this.props.entityType === 'device' ?
                         <OverlayTrigger placement="top" overlay={tooltipRefreshStatus}>
                             <Glyphicon glyph={'refresh'}
                                        className={'settings--icon'}
@@ -271,6 +268,7 @@ entity['role'] = {
                                            el.id,
                                            this.props.entityType)}/>
                         </OverlayTrigger>: ''}
+
                 </div>
             </td>);
 

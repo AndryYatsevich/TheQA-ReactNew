@@ -447,11 +447,20 @@ user-info-menu--bell{
   width: 280px;
 }
 .comment-buttons--plus{
-
+  z-index: 20000;
+  position: absolute;
+  left: -10px;
+  top: 18px;
+  font-size: 12px;
   cursor: pointer;
+
 }
 .comment-buttons--plus:hover {
   color: #23b195;
+}
+
+.btn-delete-comment{
+  margin-left: 5px;
 }
 
 .journal-btn--size {
@@ -472,4 +481,34 @@ user-info-menu--bell{
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+.journal-device--name-cell{
+  z-index: 5;
+  position: relative;
+}
+
+.journal-comment--badge{
+  z-index: 2;
+  position: absolute;
+  left: -3px;
+  top: 5px;
+  background-color: #d57171;
+  text-transform: uppercase;
+  font-weight: 600;
+  padding: 3px 5px;
+  font-size: 10px;
+  margin-top: 1px;
+  color: #ffffff;
+  display: inline-block;
+  line-height: 1;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: baseline;
+  border-radius: 50%;
+}
+
+.journal-comment--badge:hover {
+  cursor: pointer;
+  color: #23b195;
 }
