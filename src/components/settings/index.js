@@ -32,7 +32,7 @@ class Settings extends React.Component {
                                 tableColumn={['Логин', 'ФИО', 'Роль', 'email', '']}
                                 getRequiredData={this.props.actionGetAllUser}
                                 tableContent={this.props.users}
-                                model={['login', 'name', 'roles','','btn']}
+                                model={['login', 'name', 'roles', 'email','btn']}
                                 addEntity={'Добавить нового пользователя'}
                                 editEntity={'Редактирование пользователя'}
                                 deleteEntity={'Удаление пользователя'}

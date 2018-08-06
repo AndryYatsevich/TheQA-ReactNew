@@ -45,10 +45,15 @@ class History extends React.Component {
         return count ? <span className={'bell--badge'}>{count}</span> : '';
     };
 
+    sortArray = (obj1, obj2) => {
+        if (obj1.createTs < obj2.createTs) return 1;
+        if (obj1.createTs > obj2.createTs) return -1;
+    };
+
     listNotification = (array, userInfo) => {
         let waitingDevice = [];
         if(array && userInfo) {
-            array.map((el) => {
+            array.sort(this.sortArray).map((el) => {
                 if(el.testing) {
                     if(el.state === 'WAIT' && userInfo.roles[0] === 'Administrators'){
                         waitingDevice.push(el);

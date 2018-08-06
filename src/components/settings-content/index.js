@@ -295,7 +295,12 @@ entity['role'] = {
     })
     };
 
-    tableContentRender = (array, model) => (array && array.map((el, key) => {
+    sortArray = (obj1, obj2) => {
+        if (obj1.createTs < obj2.createTs) return 1;
+        if (obj1.createTs > obj2.createTs) return -1;
+    };
+
+    tableContentRender = (array, model) => (array && array.sort(this.sortArray).map((el, key) => {
         return <tr key={key}>{this.renderTableCell(el, model)}</tr>
     }));
 

@@ -384,7 +384,6 @@ user-info-menu--bell{
   background-clip: padding-box;
   border: 1px solid rgba(0,0,0,.15);
   border-radius: .25rem;
-  width: 200px;
   line-height: 30px;
 }
 
@@ -511,4 +510,9 @@ user-info-menu--bell{
 .journal-comment--badge:hover {
   cursor: pointer;
   color: #23b195;
+}
+
+.comment-author{
+  font-size: 12px;
+  float: right;
 }

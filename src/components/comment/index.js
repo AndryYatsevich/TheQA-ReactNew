@@ -55,8 +55,12 @@ class Comment extends React.Component {
         this.props.deleteComment(this.props.el.id);
     };
     acceptEditingComment = () => {
+        let commentDate = [];
+        commentDate.push(this.state.comment);
+        commentDate.push(this.props.userInfo.name);
+
         let comment = {
-            comment: this.state.comment
+            comment: commentDate.toString()
         };
 
         this.setState({editingComment: false});
@@ -143,6 +147,21 @@ class Comment extends React.Component {
             )
         }
     }
+    renderCommentMessage = () => {
+
+        let message = this.props.el.comment.split(',');
+        let messageWithoutAuthor = [];
+        for (let i = 0; i < message.length - 1; i++){
+            messageWithoutAuthor.push(message[i]);
+        }
+        console.log(this.props, messageWithoutAuthor, message[message.length-1]);
+        return <div>
+            <p>{messageWithoutAuthor.toString()}</p>
+            <br/>
+            <p className={'comment-author'}>Комментарий оставил: <b>{message[message.length-1]}</b></p>
+        </div>
+    };
+
     render () {
         return ( <div>
                 {this.props.el.comment && !this.state.editingComment ?
@@ -158,7 +177,7 @@ class Comment extends React.Component {
                         </Modal.Header>
 
                         <Modal.Body>
-                            {this.props.el.comment}
+                            {this.renderCommentMessage()}
                         </Modal.Body>
 
                         <Modal.Footer>

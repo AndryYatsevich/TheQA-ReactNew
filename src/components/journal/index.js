@@ -75,11 +75,11 @@ class Journal extends React.Component {
             return <div>Ожидает списания</div>
 
         } else if (el.state === 'WAIT' && this.props.userInfo && this.props.userInfo.roles[0] === 'Administrators') {
-            return <Button bsStyle="danger journal-btn--size" onClick={() => this.acceptAdmin(el)}>Списать</Button>
+            return <Button bsStyle="warning journal-btn--size" onClick={() => this.acceptAdmin(el)}>Списать</Button>
         }
 
         if (el.state === 'TAKEN' && this.props.userInfo && el.testing.user.id === this.props.userInfo.id) {
-            return <Button bsStyle="warning journal-btn--size" onClick={() => this.returnDevice(el)}>Сдать</Button>
+            return <Button bsStyle="danger journal-btn--size" onClick={() => this.returnDevice(el)}>Сдать</Button>
         } else {
             return <p>Девайс занят</p>
         }
