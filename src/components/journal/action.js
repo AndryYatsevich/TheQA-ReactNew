@@ -36,8 +36,6 @@ export const changeStatusToWork = (device, date) => (dispatch) => {
 };
 
 export const changeStatusToFree = (device) => (dispatch) => {
-    console.log('changeStatusToWork', device);
-
         fetch('http://localhost:8080/app/rest/v2/entities/testersjournal$Device/' + device.id, {
             method: "PUT",
             headers: {

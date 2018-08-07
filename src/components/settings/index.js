@@ -1,7 +1,7 @@
 import React from 'react';
 import {Tabs, Tab} from 'react-bootstrap';
 import {connect} from 'react-redux';
-import {getDeviceOS} from "../settings/action";
+import {getDeviceOS, resetDeviceStatus} from "../settings/action";
 import SettingDevices from '../settings-devices';
 import SettingsContent from '../settings-content';
 import {actionGetAllOS,
@@ -86,6 +86,7 @@ class Settings extends React.Component {
                                 addEntityAction={this.props.actionAddNewEntity}
                                 deleteEntityAction={this.props.actionDeleteEntity}
                                 editEntityAction={this.props.actionEditEntity}
+                                resetDeviceStatus={this.props.resetDeviceStatus}
                                 entityField = {['name', 'description', 'screenResolution', 'deviceOs']}
                                 path={'/v2/entities/testersjournal$Device'}
                                 entityType={'device'}
@@ -182,10 +183,6 @@ const mapStateToProps = (state) => ({
     users: state.common.users
 });
 
-/*const mapDispatchToProps = (dispatch) => ({
-  getUserCredential: () => getUserCredential(dispatch)
-
-});*/
 export default connect(mapStateToProps, {
     actionGetAllDevice,
     getDeviceOS,
@@ -194,10 +191,6 @@ export default connect(mapStateToProps, {
     actionGetAllRoles,
     actionAddNewEntity,
     actionDeleteEntity,
-    actionEditEntity
-    /* actionGetAllDevice,
-    actionAddNewDevice,
-    actionDeleteDevice,
-    actionEditDevice,
-    actionAddNewUser */
+    actionEditEntity,
+    resetDeviceStatus
 })(Settings);

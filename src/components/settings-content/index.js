@@ -1,5 +1,7 @@
 import React from 'react';
 import {Button, Table, Glyphicon, Modal, FormGroup, ControlLabel, FormControl, Tooltip, OverlayTrigger} from 'react-bootstrap';
+import services from "../../common/services";
+import commonAction from "../../common/constants";
 
 class SettingsContent extends React.Component {
     constructor(props) {
@@ -89,7 +91,9 @@ class SettingsContent extends React.Component {
         this.setState({
             showResetModal: true,
             deviceStatus: el.state,
-            name: el.testing.user.name
+            name: el.testing.user.name,
+            deviceTestingId: el.testing.id,
+            deviceId: el.id
         });
     }
 
@@ -371,6 +375,24 @@ entity['role'] = {
         }
     };
 
+    resetStatus = () => {
+
+        let date = new Date();
+        let testing = {
+            endTime: date.getFullYear() + '-'
+            + (date.getMonth() + 1) + '-'
+            + date.getDate() + ' '
+            + date.getHours() + ':'
+            + date.getMinutes() + ':'
+            + date.getSeconds() + '.'
+            + date.getMilliseconds()
+        };
+        this.setState({
+            showResetModal: false
+        });
+    this.props.resetDeviceStatus(testing, this.state.deviceTestingId, this.state.deviceId)
+    };
+
     deleteComment = () => {
         this.setState({
             showDeleteCommentModal: false
@@ -451,7 +473,7 @@ entity['role'] = {
 
                     <Modal.Footer>
                         <Button bsStyle={'warning'}
-                                onClick={this.deleteEntity}>
+                                onClick={() => this.resetStatus()}>
                             Сбросить
                         </Button>
                         <Button bsStyle="default" onClick={this.handleCloseResetModal}>Отмена</Button>

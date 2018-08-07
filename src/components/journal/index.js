@@ -196,7 +196,6 @@ class Journal extends React.Component {
             <td>{el.state === 'TAKEN' ? <div>{el.testing.user.name}</div> : el.state === 'WAIT' ? <div>{el.testing.user.name}</div> : ''} </td>
             <td>{el.state === 'TAKEN' ?
                 <div>{this.renderDate(el.testing.startTime)}</div> : ''}</td>
-            {/*<td className={'journal-comment--cell'}></td>*/}
             <td>{this.renderDeviceButton(el)}</td>
         </tr>
     }));

@@ -24,53 +24,40 @@ fetch('http://localhost:8080/app/rest/v2/entities/testersjournal$OperationSystem
 
 };
 
-export const getAllUsers = () => (dispatch) => {
-    fetch('http://localhost:8080/app/rest/api/getUsersWithRoles', {
-        method: "GET",
+export const resetDeviceStatus = (date, deviceTestingId, deviceId) => (dispatch) => {
+
+    fetch('http://localhost:8080/app/rest/v2/entities/testersjournal$Testing/' + deviceTestingId, {
+        method: "PUT",
         headers: {
-            "Authorization": "Bearer " + localStorage.getItem('token'),
-            "Content-Type": "application/x-www-form-urlencoded"
-        }
-    }).then((response) => {
-        return response.text();
-    }).then((users) => {
-        console.log(users);
-        dispatch({
-            type: settingsAction.GET_ALL_USERS,
-            payload: users
-        });
-    })
-
-};
-
-
-export const actionAddNewUser = (data) => (dispatch) => {
-    console.log('actionAddNewUsre', JSON.stringify(data));
-    fetch('http://localhost:8080/app/rest/v2/entities/sec$User', {
-        method: "POST",
-        headers: {
-            "Authorization": "Bearer " + localStorage.getItem('token'),
-            "Content-Type": "application/json"
+            "Authorization": "Bearer " + localStorage.getItem('token')
         },
-        body: JSON.stringify(data)
-    }).then((response) => {
-        console.log(response);
-        return response.text();
-    }).then(() =>{
-        fetch('http://localhost:8080/app/rest/api/getUsersWithRoles', {
-            method: "GET",
+        body: JSON.stringify(date)
+    }).then((response) =>{
+        return response.json();
+    }).then(() => {
+        fetch('http://localhost:8080/app/rest/v2/entities/testersjournal$Device/' + deviceId, {
+            method: "PUT",
             headers: {
                 "Authorization": "Bearer " + localStorage.getItem('token'),
-                "Content-Type": "application/x-www-form-urlencoded"
-            }
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                state: "FREE",
+                testing: null
+            })
         }).then((response) => {
             return response.text();
-        }).then((users) => {
-            console.log(users);
-            dispatch({
-                type: settingsAction.GET_ALL_USERS,
-                payload: users
-            });
+        }).then(() => {
+            services.getAllDevice()
+                .then((devices) => {
+                    dispatch({
+                        type: commonAction.GET_ALL_DEVICE,
+                        payload: devices
+                    });
+                })
         })
     })
+
+
 };
+
