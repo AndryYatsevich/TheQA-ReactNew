@@ -81,7 +81,7 @@ class Journal extends React.Component {
         if (el.state === 'TAKEN' && this.props.userInfo && el.testing.user.id === this.props.userInfo.id) {
             return <Button bsStyle="danger journal-btn--size" onClick={() => this.returnDevice(el)}>Сдать</Button>
         } else {
-            return <p>Девайс занят</p>
+            return 'Девайс занят'
         }
 
     };
@@ -224,6 +224,7 @@ class Journal extends React.Component {
                             <th className={'journal-table--status-caption'}>Статус</th>
                             <th>Взял в работу</th>
                             <th>Дата/Время</th>
+                            <th></th>
                         </tr>
                         </thead>
                         <tbody>

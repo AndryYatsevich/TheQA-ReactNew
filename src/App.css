@@ -316,7 +316,7 @@ user-info-menu--bell{
 .device-status-icon{
   font-size: 28px;
   justify-content: center;
-  vertical-align: text-top;
+  vertical-align: middle;
 }
 .device-status-icon--wrap{
   text-align:  center;

@@ -6,10 +6,14 @@ class SettingsContent extends React.Component {
         super(props);
         this.handleCloseAddModal = this.handleCloseAddModal.bind(this);
         this.handleCloseDeleteModal = this.handleCloseDeleteModal.bind(this);
+        this.handleCloseResetModal = this.handleCloseResetModal.bind(this);
+        this.handleCloseDeleteCommentModal = this.handleCloseDeleteCommentModal.bind(this);
         this.state = {
             showAddModal: false,
             showDeleteModal: false,
-            editingDevice: false
+            editingDevice: false,
+            showResetModal: false,
+            showDeleteCommentModal: false
         };
     }
 
@@ -62,13 +66,36 @@ class SettingsContent extends React.Component {
             deletedEntityName: el.name,
             deletedEntityId: el.id
         });
-        console.log(this.state, 'handleShowDeleteModal <<<');
     }
 
     handleCloseDeleteModal() {
         this.setState({showDeleteModal: false});
     }
 
+    handleShowDeleteCommentModal(el) {
+        this.setState({
+            showDeleteCommentModal: true,
+            comment: el.comment,
+            id: el.id
+        });
+    }
+
+    handleCloseDeleteCommentModal() {
+        this.setState({showDeleteCommentModal: false});
+    }
+
+    handleShowResetModal(el) {
+        console.log(el);
+        this.setState({
+            showResetModal: true,
+            deviceStatus: el.state,
+            name: el.testing.user.name
+        });
+    }
+
+    handleCloseResetModal() {
+        this.setState({showResetModal: false});
+    }
 
     modalFieldHandler = (el, title) => {
         let obj = {};
@@ -232,13 +259,13 @@ entity['role'] = {
                         <OverlayTrigger placement="top" overlay={tooltipDeleteComment}>
                             <Glyphicon glyph={'tag'}
                                        className={'settings--icon'}
-                                       onClick={() => this.props.editEntityAction(
-                                           {
-                                               comment: null
-                                           },
-                                           '/v2/entities/testersjournal$Device',
-                                           el.id,
-                                           this.props.entityType)}/>
+                                       onClick={() => this.handleShowDeleteCommentModal(el)}/>
+                        </OverlayTrigger>: ''}
+                    {this.props.entityType === 'device' && el.state !== 'FREE' ?
+                        <OverlayTrigger placement="top" overlay={tooltipRefreshStatus}>
+                            <Glyphicon glyph={'refresh'}
+                                       className={'settings--icon'}
+                                       onClick={() => this.handleShowResetModal(el)}/>
                         </OverlayTrigger>: ''}
                     <OverlayTrigger placement="top" overlay={tooltipEdit}>
                         <Glyphicon glyph={'edit'}
@@ -256,22 +283,8 @@ entity['role'] = {
                                    className={'settings--icon'}
                                    onClick={() => this.refreshUserPassword(el)}/>
                     </OverlayTrigger>: ''}
-                    {this.props.entityType === 'device' ?
-                        <OverlayTrigger placement="top" overlay={tooltipRefreshStatus}>
-                            <Glyphicon glyph={'refresh'}
-                                       className={'settings--icon'}
-                                       onClick={() => this.props.editEntityAction(
-                                           {
-                                               comment: null
-                                           },
-                                           '/v2/entities/testersjournal$Device',
-                                           el.id,
-                                           this.props.entityType)}/>
-                        </OverlayTrigger>: ''}
-
                 </div>
             </td>);
-
         }
         return tableRow;
     };
@@ -309,7 +322,6 @@ entity['role'] = {
     }));
 
     renderAddModal = (array) => (array && array.map(el => {
-
         return (el.type === 'options' ?
             <FormGroup
                 controlId="formBasicText">
@@ -341,6 +353,36 @@ entity['role'] = {
     renderOptionField = (array) => (array && array.map((el, key) => {
         return <option value={el.id} key={key}>{el.name}</option>
     }));
+
+    renderComment = () => {
+
+        if(this.state.comment) {
+            let message = this.state.comment.split(',');
+            let messageWithoutAuthor = [];
+            for (let i = 0; i < message.length - 1; i++) {
+                messageWithoutAuthor.push(message[i]);
+            }
+
+        return <div>
+            <p> Комментарий: <b>"{messageWithoutAuthor.toString()}"</b></p><br/>
+            <p>Автор: <b>{message[message.length-1]}</b></p>
+            <br/>
+        </div>
+        }
+    };
+
+    deleteComment = () => {
+        this.setState({
+            showDeleteCommentModal: false
+        });
+        this.props.editEntityAction(
+            {
+                comment: null
+            },
+            '/v2/entities/testersjournal$Device',
+            this.state.id,
+            this.props.entityType)
+    };
 
     render() {
         return (<div>
@@ -395,6 +437,43 @@ entity['role'] = {
                         <Button bsStyle="default" onClick={this.handleCloseDeleteModal}>Отмена</Button>
                     </Modal.Footer>
                 </Modal>
+                {/*модалка сброса статуса девайса*/}
+                <Modal show={this.state.showResetModal} onHide={this.handleCloseResetModal}>
+                    <Modal.Header>
+                        <Modal.Title>Сброс статуса девайса</Modal.Title>
+                    </Modal.Header>
+
+                    <Modal.Body>
+                        {this.state.deviceStatus === 'TAKEN' ?
+                            <div>В данный момент девайс находится в работе у <b>{this.state.name}</b>, вы действительо хотите сбросить статус?</div> :
+                            <div>В данный момент девайс ожидает списания. Вы действительно хотите сбросить статус?</div>}
+                    </Modal.Body>
+
+                    <Modal.Footer>
+                        <Button bsStyle={'warning'}
+                                onClick={this.deleteEntity}>
+                            Сбросить
+                        </Button>
+                        <Button bsStyle="default" onClick={this.handleCloseResetModal}>Отмена</Button>
+                    </Modal.Footer>
+                </Modal>
+                {/*модалка подтверждения удаления комментария*/}
+                <Modal show={this.state.showDeleteCommentModal} onHide={this.handleCloseDeleteCommentModal}>
+                    <Modal.Header>
+                        <Modal.Title>Комментарий к девайсу</Modal.Title>
+                    </Modal.Header>
+
+                    <Modal.Body>{this.renderComment()}</Modal.Body>
+
+                    <Modal.Footer>
+                        <Button bsStyle={'warning'}
+                                onClick={() => this.deleteComment()}>
+                            Удалить
+                        </Button>
+                        <Button bsStyle="default" onClick={this.handleCloseDeleteCommentModal}>Отмена</Button>
+                    </Modal.Footer>
+                </Modal>
+
             </div>
         );
     }
