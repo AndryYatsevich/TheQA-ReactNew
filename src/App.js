@@ -28,8 +28,15 @@ class App extends Component {
 
     logout = () => {
         console.log('takoe');
-        localStorage.removeItem('token');
-        this.setState({auth: !this.state.auth})
+        /*localStorage.removeItem('token');*/
+        function getCookie(name) {
+            var matches = document.cookie.match(new RegExp(
+                "(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
+            ));
+            return matches ? decodeURIComponent(matches[1]) : undefined;
+        }
+        console.log(getCookie('JSESSIONID'));
+        //this.setState({auth: !this.state.auth})
     };
 
     render() {

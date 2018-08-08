@@ -437,7 +437,7 @@ entity['role'] = {
                     </Modal.Body>
 
                     <Modal.Footer>
-                        <Button onClick={this.handleClose}>Закрыть</Button>
+                        <Button onClick={this.handleCloseAddModal}>Закрыть</Button>
                         {this.state.editingEntity ?
                             <Button bsStyle="success" onClick={this.acceptEditEntity}>Сохранить изменения</Button> :
                             <Button bsStyle="success" onClick={this.addEntity}>Добавить</Button>}
