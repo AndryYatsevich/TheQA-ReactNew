@@ -29,13 +29,18 @@ class App extends Component {
     logout = () => {
         console.log('takoe');
         /*localStorage.removeItem('token');*/
-        function getCookie(name) {
-            var matches = document.cookie.match(new RegExp(
-                "(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
-            ));
-            return matches ? decodeURIComponent(matches[1]) : undefined;
-        }
-        console.log(getCookie('JSESSIONID'));
+
+        let data = localStorage.getItem('token');
+        fetch('http://localhost:8080/app-portal/api/logout', {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(data)
+        }).then((response) => {
+            console.log(response);
+            return response.text();
+        });
         //this.setState({auth: !this.state.auth})
     };
 
