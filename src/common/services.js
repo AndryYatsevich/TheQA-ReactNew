@@ -77,7 +77,7 @@ export default {
     },
 
     getAllTesting: function () {
-        return fetch('http://localhost:8080/app/rest/v2/entities/testersjournal$Testing', {
+        return fetch('http://localhost:8080/app/rest/v2/entities/testersjournal$Testing?view=withUserAndDevice', {
             method: "GET",
             headers: {
                 "Authorization": "Bearer " + localStorage.getItem('token'),
