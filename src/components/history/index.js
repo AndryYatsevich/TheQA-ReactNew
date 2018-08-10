@@ -70,6 +70,7 @@ class History extends React.Component {
         let sortTestingListDevice = [];
         let sortTestingListUser = [];
         let sortDate = [];
+        let nothingUserAndDevice;
         if(array){
             if(this.state.user) {
                 sortTestingListUser = array.filter((el) => {
@@ -87,8 +88,11 @@ class History extends React.Component {
             } else {
                 sortTestingListDevice = sortTestingListUser;
             }
+            if(this.state.user && this.state.device && sortTestingListDevice.length === 0) {
+                nothingUserAndDevice = true;
+            }
             console.log('sortTestingListDevice:', sortTestingListDevice, 'sortTestingListUser:', sortTestingListUser);
-            if(this.state.dateTo && this.state.dateAfter && sortTestingListDevice.length !== 0) {
+            if(this.state.dateTo && this.state.dateAfter && (sortTestingListDevice.length !== 0 || nothingUserAndDevice)) {
                 sortDate = sortTestingListDevice.filter((el) => {
                     return new Date(el.startTime) > new Date(this.state.dateTo) && new Date(el.startTime) < new Date(this.state.dateAfter);
                 });
