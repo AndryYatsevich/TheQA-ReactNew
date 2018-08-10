@@ -67,24 +67,47 @@ class History extends React.Component {
     };
 
     renderTable = (array) => {
-        let sortTestingListDevice;
-        let sortTestingListUser;
+        let sortTestingListDevice = [];
+        let sortTestingListUser = [];
+        let sortDate = [];
         if(array){
             if(this.state.user) {
                 sortTestingListUser = array.filter((el) => {
                     return el.user.id === this.state.user;
                 });
             }
-            if(this.state.device && sortTestingListUser) {
+            if(this.state.device && sortTestingListUser.length !== 0) {
                 sortTestingListDevice = sortTestingListUser.filter((el) => {
                     return el.device.id === this.state.device;
                 });
-            } else if(this.state.device && !sortTestingListUser) {
+            } else if(this.state.device ) {
                 sortTestingListDevice = array.filter((el) => {
                     return el.device.id === this.state.device;
             });
             } else {
                 sortTestingListDevice = sortTestingListUser;
+            }
+            console.log('sortTestingListDevice:', sortTestingListDevice, 'sortTestingListUser:', sortTestingListUser);
+            if(this.state.dateTo && this.state.dateAfter && sortTestingListDevice.length !== 0) {
+                sortDate = sortTestingListDevice.filter((el) => {
+                    return new Date(el.startTime) > new Date(this.state.dateTo) && new Date(el.startTime) < new Date(this.state.dateAfter);
+                });
+                sortTestingListDevice = sortDate;
+            } else if (this.state.dateTo && this.state.dateAfter){
+                sortDate = array.filter((el) => {
+                    return new Date(el.startTime) > new Date(this.state.dateTo) && new Date(el.startTime) < new Date(this.state.dateAfter);
+                });
+                sortTestingListDevice = sortDate;
+            } else if (this.state.dateTo) {
+                sortDate = array.filter((el) => {
+                    return new Date(el.startTime) > new Date(this.state.dateTo);
+                });
+                sortTestingListDevice = sortDate;
+            } else if (this.state.dateAfter) {
+                sortDate = array.filter((el) => {
+                    return new Date(el.startTime) < new Date(this.state.dateAfter);
+                });
+                sortTestingListDevice = sortDate;
             }
 
             return  sortTestingListDevice.sort(this.sortArray).map((el, key) => {
