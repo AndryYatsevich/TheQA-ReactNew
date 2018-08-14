@@ -8,7 +8,6 @@ class leftMenu extends React.Component {
         if(array && userInfo) {
             array.map((el) => {
                 if(el.testing) {
-                    console.log(el, 'takoe o_O');
                     if(el.testing.user.login === userInfo.login){
                         count += 1;
                     }
