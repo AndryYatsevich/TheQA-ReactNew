@@ -3,6 +3,7 @@ import React from 'react';
 import {Glyphicon, Row, Col} from 'react-bootstrap';
 import avatar from '../../img/avatar.jpg';
 import Bell from '../bell';
+import {Link} from 'react-router-dom';
 
 class userInfo extends React.Component {
     constructor(props) {
@@ -51,10 +52,12 @@ class userInfo extends React.Component {
                         </ul>
                         {this.state.userMenu ?
                             <div className={'user-info-menu'}>
-                                <div className={'user-info-menu-item'}onClick={this.props.logout}>
-                                    <Glyphicon glyph="user" className={'user-info--menu-icon'}/>
-                                    <span>Профиль</span>
-                                </div>
+                               <Link to={'/profile'} >
+                                   <div className={'user-info-menu-item'}onClick={this.props.logout}>
+                                        <Glyphicon glyph="user" className={'user-info--menu-icon'}/>
+                                        <span>Профиль</span>
+                                    </div>
+                               </Link>
                                 <div className={'user-info-menu-item'} onMouseEnter={this.handlerOver} onMouseLeave={this.handlerBlur}  onClick={this.props.logout}>
                                     <Glyphicon glyph="off" className={'user-info--menu-icon'}/>
                                     <span>Выйти</span>

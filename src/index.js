@@ -13,6 +13,7 @@ import Journal from './components/journal';
 import Info from './components/info';
 import History from './components/history';
 import Settings from './components/settings';
+import Profile from './components/profile'
 
 const store = createStore(rootReducer, composeWithDevTools(applyMiddleware(thunk)));
 
@@ -32,6 +33,7 @@ ReactDOM.render(
                 <RouteWishApp path='/info' Component={Info} />
                 <RouteWishApp path='/settings' Component={Settings} />
                 <RouteWishApp path='/history' Component={History} />
+                <RouteWishApp path='/profile' Component={Profile} />
                 <RouteWishApp  Component={Info}/>
             </Switch>
         </Router>

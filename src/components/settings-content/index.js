@@ -10,12 +10,14 @@ class SettingsContent extends React.Component {
         this.handleCloseDeleteModal = this.handleCloseDeleteModal.bind(this);
         this.handleCloseResetModal = this.handleCloseResetModal.bind(this);
         this.handleCloseDeleteCommentModal = this.handleCloseDeleteCommentModal.bind(this);
+        this.handleCloseResetPasswordModal = this.handleCloseResetPasswordModal.bind(this);
         this.state = {
             showAddModal: false,
             showDeleteModal: false,
             editingDevice: false,
             showResetModal: false,
-            showDeleteCommentModal: false
+            showDeleteCommentModal: false,
+            showResetPasswordModal: false
         };
     }
 
@@ -99,6 +101,18 @@ class SettingsContent extends React.Component {
 
     handleCloseResetModal() {
         this.setState({showResetModal: false});
+    }
+
+
+    handleShowResetPasswordModal(el) {
+        this.setState({
+            showResetPasswordModal: true,
+            userName: el.name
+        });
+    }
+
+    handleCloseResetPasswordModal() {
+        this.setState({showResetPasswordModal: false});
     }
 
     modalFieldHandler = (el, title) => {
@@ -285,7 +299,7 @@ entity['role'] = {
                         <OverlayTrigger placement="top" overlay={tooltipRefreshPassword}>
                             <Glyphicon glyph={'refresh'}
                                    className={'settings--icon'}
-                                   onClick={() => this.refreshUserPassword(el)}/>
+                                   onClick={() => this.handleShowResetPasswordModal(el)}/>
                     </OverlayTrigger>: ''}
                 </div>
             </td>);
@@ -493,6 +507,23 @@ entity['role'] = {
                             Удалить
                         </Button>
                         <Button bsStyle="default" onClick={this.handleCloseDeleteCommentModal}>Отмена</Button>
+                    </Modal.Footer>
+                </Modal>
+                {/*модалка сброса пароля*/}
+                <Modal show={this.state.showResetPasswordModal} onHide={this.handleCloseResetPasswordModal}>
+                    <Modal.Header>
+                        <Modal.Title>Сброс пароля пользователя</Modal.Title>
+                    </Modal.Header>
+
+                    <Modal.Body><div>Пароль будет сброшен до стандартного. Сатандартный пароль: <b>pass</b></div>
+                    Вы действительно хотите сбросит пароль пользователя <b>{this.state.userName}</b>?</Modal.Body>
+
+                    <Modal.Footer>
+                        <Button bsStyle={'warning'}
+                                onClick={() => this.refreshUserPassword()}>
+                            Сбросить пароль
+                        </Button>
+                        <Button bsStyle="default" onClick={this.handleCloseResetPasswordModal}>Отмена</Button>
                     </Modal.Footer>
                 </Modal>
 
