@@ -516,3 +516,26 @@ user-info-menu--bell{
   font-size: 12px;
   float: right;
 }
+.img-center {
+  text-align: center;
+}
+.profile--avatar {
+  height: 400px;
+  width: 400px;
+  border-radius: 50%;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.change-avatar--btn{
+  display: none !important;
+
+}
+
+.img-center-ava {
+  width: 150px;
+  height: 150px;
+  background-position: center;
+  background-size: cover;
+  border-radius: 150px;
+}

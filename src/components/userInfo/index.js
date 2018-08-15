@@ -46,17 +46,17 @@ class userInfo extends React.Component {
                             </li>
                             <li className={'user-info--item'} onMouseEnter={this.handlerOver} onMouseLeave={this.handlerBlur}  onClick={this.userMenuHandle}>
                                 <img src={avatar} className={'user-info--avatar'} alt="avatar"/>
-                                {this.props.userInfo ? this.props.userInfo.name : 'Кто ты блеать?!'}
+                                {this.props.userInfo ? this.props.userInfo.name : ''}
                                 <Glyphicon glyph="menu-down" className={'user-info-menu-down'}/>
                             </li>
                         </ul>
                         {this.state.userMenu ?
                             <div className={'user-info-menu'}>
-                               <Link to={'/profile'} >
-                                   <div className={'user-info-menu-item'}onClick={this.props.logout}>
+                               <Link to={'/profile'} className={'user-info-menu-item'}>
+
                                         <Glyphicon glyph="user" className={'user-info--menu-icon'}/>
                                         <span>Профиль</span>
-                                    </div>
+
                                </Link>
                                 <div className={'user-info-menu-item'} onMouseEnter={this.handlerOver} onMouseLeave={this.handlerBlur}  onClick={this.props.logout}>
                                     <Glyphicon glyph="off" className={'user-info--menu-icon'}/>
