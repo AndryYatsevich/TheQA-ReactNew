@@ -22,26 +22,24 @@ class App extends Component {
     }
 
     componentDidMount () {
-       this.props.actionGetUserInfo();
-       this.props.actionGetAllDevice();
+        this.props.actionGetUserInfo();
+        this.props.actionGetAllDevice();
+
     }
 
     logout = () => {
         console.log('takoe');
-        /*localStorage.removeItem('token');*/
-
-        let data = localStorage.getItem('token');
-        fetch('http://localhost:8080/app-portal/api/logout', {
-            method: "POST",
+        localStorage.removeItem('token');
+        /*fetch('http://localhost:8080/app/rest/api/logout', {
+            method: "GET",
             headers: {
+                "Authorization": "Bearer " + localStorage.getItem('token'),
                 "Content-Type": "application/json"
-            },
-            body: JSON.stringify(data)
+            }
         }).then((response) => {
             console.log(response);
             return response.text();
-        });
-        //this.setState({auth: !this.state.auth})
+        });*/
     };
 
     render() {

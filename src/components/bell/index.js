@@ -32,7 +32,9 @@ class History extends React.Component {
     countNotification = (array, userInfo) => {
         let count = 0;
         let waitingDevice = [];
-        if(array && userInfo) {
+        console.log(array, userInfo);
+
+        if(userInfo && Array.isArray(array) ) {
             array.map((el) => {
                 if(el.testing) {
                     if(el.state === 'WAIT' && userInfo.roles[0] === 'Administrators'){

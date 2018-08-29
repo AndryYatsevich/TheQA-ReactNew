@@ -175,7 +175,7 @@ class Journal extends React.Component {
             }
     };
 
-    renderDevicesTable = (array) => (array && array.sort(this.sortArray).map((el) => {
+    renderDevicesTable = (array) => (Array.isArray(array) && array.sort(this.sortArray).map((el) => {
         return <tr key={el.id} className={'journal--table'}>
             <td className={'journal-device--name-cell'}>{el.name}<Comment el={el}
                                   changeComment={this.changeComment}

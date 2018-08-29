@@ -68,7 +68,7 @@ export const createNewTesting = (date, deviceId) => (dispatch) => {
         },
         body: JSON.stringify(date)
     }).then((response) =>{
-
+        console.log('--------------->', response);
         return response.json();
     }).then((devices) => {
         fetch('http://localhost:8080/app/rest/v2/entities/testersjournal$Device/' + deviceId, {

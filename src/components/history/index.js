@@ -70,11 +70,12 @@ class History extends React.Component {
         if(array){
 
             let array1 = array.filter((el) => {
+                console.log(Date.now(el.startTime), Date.now(el.startTime) >Date.now(this.state.dateTo));
                 let result = true;
                 this.state.user && result && (result = el.user.id === this.state.user);
                 this.state.device && result &&(result = el.device.id === this.state.device);
-                this.state.dateTo && result &&(result = new Date(el.startTime) > new Date(this.state.dateTo));
-                this.state.dateAfter && result &&(result = new Date(el.endTime) < new Date(this.state.dateAfter));
+                this.state.dateTo && result &&(result = Date.now(el.startTime) >= Date.now(this.state.dateTo));
+                this.state.dateAfter && result &&(result = Date.now(el.endTime) <= Date.now(this.state.dateAfter));
 
                 return result;
             });

@@ -41,7 +41,7 @@ export const actionGetAllUser = () => (dispatch) => {
 export const actionGetAllDevice = () => (dispatch) => {
     services.getAllDevice()
         .then((devices) => {
-        console.log(devices);
+        console.log(devices, '----------------------------------->');
         dispatch({
             type: commonAction.GET_ALL_DEVICE,
             payload: devices

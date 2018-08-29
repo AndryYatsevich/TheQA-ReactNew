@@ -5,7 +5,7 @@ import {Glyphicon} from 'react-bootstrap';
 class leftMenu extends React.Component {
     countDevice = (array, userInfo) => {
         let count = 0;
-        if(array && userInfo) {
+        if(Array.isArray(array) && userInfo) {
             array.map((el) => {
                 if(el.testing) {
                     if(el.testing.user.login === userInfo.login){
