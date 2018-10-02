@@ -49,12 +49,14 @@ class App extends Component {
                 path: '/',
                 icon: 'time',
                 badge: true,
-                badgeCount: this.state.deviceCount
+                badgeCount: this.state.deviceCount,
+                access: ['Administrators', 'QA Engineer', 'Team Lead']
             },
             {
                 title: 'История',
                 path: '/history',
-                icon: 'book'
+                icon: 'book',
+                access: ['Administrators', 'QA Engineer', 'Team Lead']
             },
             {
                 title: 'Информация',
@@ -64,7 +66,8 @@ class App extends Component {
             {
                 title: 'Настройки',
                 path: '/settings',
-                icon: 'cog'
+                icon: 'cog',
+                access: ['Administrators', 'Team Lead']
             },
         ];
         return (

@@ -54,6 +54,7 @@ class Auth extends React.Component {
                                             type="password"
                                             placeholder="Введите пароль"
                                             onChange={this.passwordChange}
+                                            autoComplete="off"
                                         />
                                     </FormGroup>
                                     <Button bsStyle="primary"

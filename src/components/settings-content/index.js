@@ -14,7 +14,7 @@ class SettingsContent extends React.Component {
         this.state = {
             showAddModal: false,
             showDeleteModal: false,
-            editingDevice: false,
+            editingEntity: false,
             showResetModal: false,
             showDeleteCommentModal: false,
             showResetPasswordModal: false
@@ -89,7 +89,6 @@ class SettingsContent extends React.Component {
     }
 
     handleShowResetModal(el) {
-        console.log(el);
         this.setState({
             showResetModal: true,
             deviceStatus: el.state,
@@ -107,7 +106,8 @@ class SettingsContent extends React.Component {
     handleShowResetPasswordModal(el) {
         this.setState({
             showResetPasswordModal: true,
-            userName: el.name
+            userName: el.name,
+            userId: el.id
         });
     }
 
@@ -119,7 +119,6 @@ class SettingsContent extends React.Component {
         let obj = {};
         obj[title] = el.target.value;
         this.setState(obj);
-        console.log(this.state);
     };
 
     modalOptionHandler = (e, el) => {
@@ -154,12 +153,11 @@ class SettingsContent extends React.Component {
             entity['state'] = 'FREE';
         }
         if(this.props.entityType === 'user') {
-entity['role'] = {
-    id: this.state.role
-}
-
+            entity['role'] = {
+                id: this.state.role
+            }
         };
-
+        console.log('add entity: ', entity, 'this.props.path: ', this.props.path );
         this.props.addEntityAction(entity, this.props.path, this.props.entityType);
         for (let i = 0; i < this.props.entityField.length; i++) {
             state[this.props.entityField[i]] = null;
@@ -176,7 +174,7 @@ entity['role'] = {
         };
         for (let i = 0; i < this.props.entityField.length; i++) {
             for (let key in this.state) {
-                if (key === this.props.entityField[i] && key !== 'deviceOs') {
+                if (key === this.props.entityField[i] && key !== 'deviceOs' && key !== 'role' && key !== 'password') {
                     entity[this.props.entityField[i]] = this.state[this.props.entityField[i]]
                 }
             }
@@ -190,6 +188,10 @@ entity['role'] = {
             entity['state'] = 'FREE';
         }
         if (this.props.entityType === 'user') {
+            entity['role'] = {
+                id: this.state.role
+            }
+            console.log('entity: ',entity);
             this.props.editEntityAction(
                 entity,
                 '/v2/entities/sec$User',
@@ -307,11 +309,10 @@ entity['role'] = {
         return tableRow;
     };
 
-    refreshUserPassword = (el) => {
-        console.log(el);
+    refreshUserPassword = () => {
         let data = {
             newPassword: 'pass',
-            userId: el.id
+            userId: this.state.userId
         };
 
         fetch('http://localhost:8080/app/rest/api/changePassword', {
@@ -323,7 +324,10 @@ entity['role'] = {
             body: JSON.stringify(data)
         }).then((response) => {
             return response.text();
-    })
+    });
+        this.setState({
+            showResetPasswordModal: false
+        })
     };
 
     sortArray = (obj1, obj2) => {
@@ -354,7 +358,8 @@ entity['role'] = {
                     {this.renderOptionField(el.options)}
                 </FormControl>
             </FormGroup>
-            :
+            : el.title == 'Пароль' && this.state.editingEntity ?
+            '': 
             <FormGroup
                 controlId="formBasicText"
             >
@@ -365,7 +370,7 @@ entity['role'] = {
                     defaultValue={this.modalFieldDefaultValue(el.handler)}
                     onChange={(e) => this.modalFieldHandler(e, el.handler)}
                 />
-            </FormGroup>)
+            </FormGroup> )
     }));
 
     renderOptionField = (array) => (array && array.map((el, key) => {
@@ -439,7 +444,7 @@ entity['role'] = {
                 <Modal show={this.state.showAddModal} onHide={this.handleCloseAddModal}>
 
                     <Modal.Header closeButton>
-                        {this.state.editingDevice ?
+                        {this.state.editingEntity ?
                             <Modal.Title>{this.props.editEntity}</Modal.Title> :
                             <Modal.Title>{this.props.addEntity}</Modal.Title>}
                     </Modal.Header>

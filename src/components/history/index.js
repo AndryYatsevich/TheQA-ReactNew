@@ -51,8 +51,8 @@ class History extends React.Component {
         } else {
             minute = parseDate.getMinutes();
         }
-        let currentDate = (parseDate.getDate() < 10 ? '0' + parseDate.getDate() : parseDate.getDate()) + '.' +
-            (parseDate.getMonth() < 10 ? '0' + (parseDate.getMonth() + 1) : (parseDate.getMonth() + 1)) + '.' +
+        let currentDate = (parseDate.getDate() < 9 ? '0' + parseDate.getDate() : parseDate.getDate()) + '.' +
+            (parseDate.getMonth() < 9 ? '0' + (parseDate.getMonth() + 1) : (parseDate.getMonth() + 1)) + '.' +
             parseDate.getFullYear() +  ' '
             + parseDate.getHours() + ':'
             + minute;

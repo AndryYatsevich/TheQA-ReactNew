@@ -1,18 +1,17 @@
 import React from 'react';
-import {actionGetAllDevice, actionGetAllTesting, actionGetAllUser} from "../../common/action";
 import {connect} from "react-redux";
-import {Grid, Row, Col, Button, FormControl, ControlLabel, FormGroup} from 'react-bootstrap';
+import {Row, Col, Button, FormControl, ControlLabel, FormGroup, Modal} from 'react-bootstrap';
 import avatar from '../../img/avatar.jpg';
-/*import {Grid, Row, Col} from 'react-flexbox-grid';*/
 
 class Profile extends React.Component {
     constructor() {
         super();
+        this.handleCloseResetPasswordModal = this.handleCloseResetPasswordModal.bind(this);
         this.state = {
-
+            showResetPasswordModal: false,
+            changeUserPasswordBtnDisabled: true
         }
     }
-
 
     fileOnChange = (e) => {
 
@@ -34,6 +33,62 @@ class Profile extends React.Component {
         reader.readAsDataURL(e.target.files[0]);
         console.log(e.target.files[0]);
 
+    };
+
+    handleShowResetPasswordModal(el) {
+        this.setState({
+            showResetPasswordModal: true,
+            userName: el.name,
+            userId: el.id
+        });
+    }
+
+    handleCloseResetPasswordModal() {
+        this.setState({showResetPasswordModal: false});
+    }
+
+    changeNewPassword = (e) => {
+        this.setState({newPassword: e.target.value});
+        this.checkNewPassword(e.target.value, this.state.acceptNewPassword);
+    };
+
+    changeAcceptNewPassword = (e) => {
+        this.setState({acceptNewPassword: e.target.value});
+        this.checkNewPassword(this.state.newPassword, e.target.value);
+    };
+
+    checkNewPassword = (newPassword, acceptNewPassword) => {
+        console.log(newPassword, acceptNewPassword);
+        if(newPassword === acceptNewPassword) {
+            this.setState({
+                changeUserPasswordBtnDisabled: false
+            })
+        } else {
+            this.setState({
+                changeUserPasswordBtnDisabled: true
+            })
+        }
+    };
+
+    changeUserPassword = () => {
+        let data = {
+            newPassword: this.state.newPassword,
+            userId: this.props.userInfo.id
+        };
+
+        fetch('http://localhost:8080/app/rest/api/changePassword', {
+            method: "POST",
+            headers: {
+                "Authorization": "Bearer " + localStorage.getItem('token'),
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(data)
+        }).then((response) => {
+            return response.text();
+        });
+        this.setState({
+            showResetPasswordModal: false
+        })
     };
 
     render() {
@@ -65,11 +120,58 @@ class Profile extends React.Component {
                     </Col>
                     <Col xs={6}>
                 <div className={'content-box'}>
-                    <div>{this.props.userInfo ? this.props.userInfo.name : ''}</div>
-                    <div>{this.props.userInfo? this.props.userInfo.roles : ''}</div>
+                    <div>Имя пользователя: {this.props.userInfo ? this.props.userInfo.name : ''}</div>
+                    <div>Роль: {this.props.userInfo? this.props.userInfo.roles : ''}</div>
+                    <div>
+                        <Button
+                            bsStyle="success"
+                            onClick={(el) => this.handleShowResetPasswordModal(el)}>
+                            Сменить пароль
+                        </Button>
+                    </div>
                 </div>
                     </Col>
                 </Row>
+                {/*модалка смены пароля*/}
+                <Modal show={this.state.showResetPasswordModal} onHide={this.handleCloseResetPasswordModal}>
+                    <Modal.Header>
+                        <Modal.Title>Сброс пароля пользователя</Modal.Title>
+                    </Modal.Header>
+
+                    <Modal.Body>
+                        <div>
+                            <FormGroup
+                                controlId="formBasicText">
+                                <ControlLabel>Новый пароль</ControlLabel>
+                                <FormControl
+                                type="password"
+                                placeholder="Новый пароль"
+                                onChange={this.changeNewPassword}
+                                />
+                                </FormGroup>
+                        </div>
+                        <div>
+                            <FormGroup
+                                controlId="formBasicText">
+                                <ControlLabel>Подтвердите пароль</ControlLabel>
+                                <FormControl
+                                type="password"
+                                placeholder="Подтвердите пароль"
+                                onChange={this.changeAcceptNewPassword}
+                                />
+                            </FormGroup>
+                        </div>
+                        </Modal.Body>
+
+                    <Modal.Footer>
+                        <Button bsStyle={'warning'}
+                                onClick={() => this.changeUserPassword()}
+                                disabled={this.state.changeUserPasswordBtnDisabled}>
+                            Изменить пароль
+                        </Button>
+                        <Button bsStyle="default" onClick={this.handleCloseResetPasswordModal}>Отмена</Button>
+                    </Modal.Footer>
+                </Modal>
             </div>
 
 

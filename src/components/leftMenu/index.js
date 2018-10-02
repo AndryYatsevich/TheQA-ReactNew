@@ -1,4 +1,5 @@
 import React from 'react';
+import {includes} from 'lodash';
 import {Link} from 'react-router-dom';
 import {Glyphicon} from 'react-bootstrap';
 
@@ -19,30 +20,32 @@ class leftMenu extends React.Component {
     };
 
     render() {
-        return (
-            this.props.menu.map((el) => {
-                return(
-                    window.location.pathname === el.path ?
-                        <li>
-                            <Link to={el.path} className={'side-menu--link active-left-menu'}>
-                                <Glyphicon glyph={el.icon} className={'side-menu--icon'}/>
-                                <span>{el.title}</span>
-                                {el.badge ? this.countDevice(this.props.devices, this.props.userInfo) : ''}
-                            </Link>
-                        </li> :
-                    <li>
-                        <Link to={el.path} className={'side-menu--link'}>
-                            <Glyphicon glyph={el.icon} className={'side-menu--icon'}/>
-                            <span>{el.title}</span>
-                            {el.badge ? this.countDevice(this.props.devices, this.props.userInfo) : ''}
-                        </Link>
-                    </li>
-
-             )
-            })
-
-
-        );
+            return (
+                this.props.menu.map((el) => {                    
+                    if (this.props.userInfo && includes(el.access, this.props.userInfo.roles[0])) {
+                        console.log('el ====> ', el, this.props.userInfo.roles[0], el.access, includes(el.access, this.props.userInfo.roles[0]));
+                        return(
+                            window.location.pathname === el.path ?
+                                <li>
+                                    <Link to={el.path} className={'side-menu--link active-left-menu'}>
+                                        <Glyphicon glyph={el.icon} className={'side-menu--icon'}/>
+                                        <span>{el.title}</span>
+                                        {el.badge ? this.countDevice(this.props.devices, this.props.userInfo) : ''}
+                                    </Link>
+                                </li> :
+                            <li>
+                                <Link to={el.path} className={'side-menu--link'}>
+                                    <Glyphicon glyph={el.icon} className={'side-menu--icon'}/>
+                                    <span>{el.title}</span>
+                                    {el.badge ? this.countDevice(this.props.devices, this.props.userInfo) : ''}
+                                </Link>
+                            </li>
+        
+                     )
+                    }                
+                })    
+            );
+        
     }
 }
 
