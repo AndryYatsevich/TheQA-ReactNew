@@ -11,7 +11,6 @@ export default {
             return response.text();
         }).then(function (user) {
             localStorage.setItem('token', JSON.parse(user).access_token);
-
         }).catch((err) => {
             console.log('An error occurred!', err);
         });

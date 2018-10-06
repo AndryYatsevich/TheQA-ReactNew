@@ -3,12 +3,10 @@ import services from "./services";
 
 
 export const actionUserAuth = (login, pass) => (dispatch) => {
-
     services.userAuth(login, pass)
-        .then((token) => {
-            services.getUserInfo(token)
+        .then(() => {
+            services.getUserInfo()
                 .then((userInfo) => {
-                    console.log(userInfo);
                     dispatch({
                         type: commonAction.GET_USER_INFO,
                         payload: userInfo
@@ -41,7 +39,6 @@ export const actionGetAllUser = () => (dispatch) => {
 export const actionGetAllDevice = () => (dispatch) => {
     services.getAllDevice()
         .then((devices) => {
-        console.log(devices, '----------------------------------->');
         dispatch({
             type: commonAction.GET_ALL_DEVICE,
             payload: devices
@@ -72,7 +69,6 @@ export const actionGetAllOS = () => (dispatch) =>{
 export const actionGetAllTesting = () => (dispatch) => {
     services.getAllTesting()
         .then((testing) => {
-            console.log(testing);
             dispatch({
                 type: commonAction.GET_ALL_TESTING,
                 payload: testing
@@ -92,10 +88,8 @@ export const actionAddNewDevice = (data) => (dispatch) => {
     }).then((response) => {
         return response.text();
     }).then((response) =>{
-        console.log(response);
         services.getAllDevice()
             .then((devices) => {
-                console.log(devices);
                 dispatch({
                     type: commonAction.GET_ALL_DEVICE,
                     payload: devices
@@ -114,10 +108,8 @@ export const actionDeleteDevice = (data) => (dispatch) => {
     }).then((response) => {
         return response.text();
     }).then((response) =>{
-        console.log(response);
         services.getAllDevice()
             .then((devices) => {
-                console.log(devices);
                 dispatch({
                     type: commonAction.GET_ALL_DEVICE,
                     payload: devices
@@ -138,10 +130,8 @@ export const actionEditDevice = (id, data) => (dispatch) => {
     }).then((response) => {
         return response.text();
     }).then((response) => {
-        console.log(response);
         services.getAllDevice()
             .then((devices) => {
-                console.log(devices);
                 dispatch({
                     type: commonAction.GET_ALL_DEVICE,
                     payload: devices

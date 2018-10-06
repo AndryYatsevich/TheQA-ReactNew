@@ -1,7 +1,7 @@
 import React from 'react';
 import {Grid, Row, Col} from 'react-bootstrap';
 import {FormGroup, ControlLabel, FormControl} from 'react-bootstrap';
-import { Button } from 'react-bootstrap';
+import { Button, Alert } from 'react-bootstrap';
 import {connect} from 'react-redux';
 import {actionUserAuth} from '../../common/action';
 
@@ -57,6 +57,10 @@ class Auth extends React.Component {
                                             autoComplete="off"
                                         />
                                     </FormGroup>
+                            {this.props.userInfo && this.props.userInfo.error && (
+                            <Alert bsStyle="danger">
+                            <strong>Логин или пароль введены неверно</strong>
+                          </Alert>)}
                                     <Button bsStyle="primary"
                                             bsSize="large"
                                             block className={'auth-btn'}
@@ -76,7 +80,6 @@ class Auth extends React.Component {
 }
 
 const mapStateToProps = (state) => ({
-
     userInfo: state.common.userInfo
 });
 

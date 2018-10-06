@@ -189,6 +189,7 @@ class SettingsContent extends React.Component {
         }
         if (this.props.entityType === 'user') {
             entity['role'] = {
+                _entityName: "sec$Role",
                 id: this.state.role
             }
             console.log('entity: ',entity);

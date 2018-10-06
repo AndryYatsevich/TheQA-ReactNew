@@ -22,9 +22,10 @@ class App extends Component {
     }
 
     componentDidMount () {
-        this.props.actionGetUserInfo();
-        this.props.actionGetAllDevice();
-
+        if (localStorage.getItem('token')) {
+            this.props.actionGetUserInfo();
+            this.props.actionGetAllDevice();
+        }
     }
 
     logout = () => {
