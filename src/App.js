@@ -29,8 +29,8 @@ class App extends Component {
     }
 
     logout = () => {
-        console.log('takoe');
         localStorage.removeItem('token');
+        this.setState({auth: false});
         /*fetch('http://localhost:8080/app/rest/api/logout', {
             method: "GET",
             headers: {
