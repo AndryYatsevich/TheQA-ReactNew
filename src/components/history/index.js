@@ -68,14 +68,16 @@ class History extends React.Component {
 
     renderTable = (array) => {
         if(array){
-
             let array1 = array.filter((el) => {
-                console.log(Date.now(el.startTime), Date.now(el.startTime) >Date.now(this.state.dateTo));
+                let elStartDate = new Date(el.startTime);
+                let dateTo = new Date(this.state.dateTo);
+                let dateAfter = new Date(this.state.dateAfter);
+                let time = 82800000; //20 часов в миллисекундах, необходимо для корректного отображения даты "до"
                 let result = true;
                 this.state.user && result && (result = el.user.id === this.state.user);
                 this.state.device && result &&(result = el.device.id === this.state.device);
-                this.state.dateTo && result &&(result = Date.now(el.startTime) >= Date.now(this.state.dateTo));
-                this.state.dateAfter && result &&(result = Date.now(el.endTime) <= Date.now(this.state.dateAfter));
+                this.state.dateTo && result &&(result = Date.parse(elStartDate) >= Date.parse(dateTo));
+                this.state.dateAfter && result &&(result = Date.parse(elStartDate) <= (Date.parse(dateAfter) + time));
 
                 return result;
             });
